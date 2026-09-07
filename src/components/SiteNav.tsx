@@ -12,7 +12,7 @@ export const SiteNav: React.FC = () => {
   const currentPath = location.pathname.split('/')[1] || 'home';
 
   return (
-    <aside className="w-full md:w-64 bg-[#EADDFF] rounded-2xl p-6 shrink-0">
+    <aside className="w-full md:w-64 bg-[#EADDFF] rounded-2xl p-6 shrink-0 order-first md:order-none">
       <div className="text-xs font-semibold tracking-[0.2em] uppercase text-[#6750A4] mb-4">
         Navigation
       </div>

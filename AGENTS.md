@@ -1,0 +1,2 @@
+- 将design token 记录在`design_doc.md` 中
+- 每次修改编译后用 playwright mcp 截图检查。

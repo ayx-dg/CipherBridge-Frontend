@@ -350,3 +350,22 @@ export default {
 **构建验证：** `npx vite build` 通过。
 
 > 说明：由此前「导航仅首页存在」导致的「进入子页导航消失」问题已解决；同时保留首页要求的 aside 位置（welcome 下、Portal 右、无边框、背景+字体区分）。
+
+---
+
+## 13. 响应式修正：小屏幕导航不再沉底（移动端置顶）
+
+**问题现象：** 页面用 `flex flex-col md:flex-row` 布局，`< md`（<768px）时行方向变为 column，`SiteNav`（DOM 顺序在内容之后）被排到页面最底部，小屏体验差。
+**修复：** 给 `SiteNav` 的 `<aside>` 加 `order-first md:order-none`，小屏时导航排到内容行首位（welcome 文字之后、Portal 卡之前），桌面端仍位于 Portal 右侧。
+
+| 维度 | `md` (≥768px) | `< md` (移动端) |
+|---|---|---|
+| 行方向 | `flex-row` | `flex-col` |
+| SiteNav `order` | `0`（`md:order-none`） | `-9999`（`order-first`） |
+| SiteNav 位置 | 内容区右侧 | 内容区顶部（welcome 下方） |
+
+**改动文件：** `src/components/SiteNav.tsx`（仅 `aside` className 追加 `order-first md:order-none`）
+**验证：** 视口 390×844，实测 `getComputedStyle(aside).order = -9999`、父容器 `flex-direction: column`、`aside` 顶部 y≈387（紧邻 welcome 下方）；截图确认导航卡片位于 Portal 卡之前，不再沉底。
+**构建验证：** `npx vite build` 通过（未被 `tsc` 阻断）。
+
+> 说明：桌面端布局、配色、无边框样式均不受影响；仅移动端顺序改变。
