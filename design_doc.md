@@ -243,3 +243,60 @@ AntLayout
 | Logo 位置 | 侧栏内 | **Header 内（侧栏外）** |
 | 首页 Portal 卡 | `max-w-5xl`（偏宽） | `max-w-4xl`（收窄、并排） |
 | 首页蓝→紫 | 靛蓝渐变 | M3 紫色系 |
+
+---
+
+## 10. 布局再调整：导航 aside 移入 Home 内容区（右侧、welcome 下方）
+
+**相较 §9 版本（`Layout.tsx` 右置 `Sider`、`Home.tsx` 仅 Portal 卡）的改动。**
+**改动文件：** `src/components/Layout.tsx`、`src/pages/Home.tsx`
+**构建验证：** `npx vite build` 通过。
+
+### 10.1 全局布局：移除全高 Sider（`Layout.tsx`）
+
+| 改动点 | §9 版本 | 本轮后 |
+|---|---|---|
+| 导航容器 | 全局 `Sider`（右侧，从顶部 sticky 满高） | **移除** `Sider`，仅保留 `Header` + `Content` |
+| 导航位置 | 独立于内容、贯穿全页高度 | 导航进入 Home 内容区内部（见 §10.2） |
+| `<Sider>` 导入 | 使用 `Sider` | 不再使用（保留 `Header, Content`） |
+| Header | 左 Logo + 右钱包按钮 | 不变 |
+
+> 说明：因导航不再作为全局侧栏，Client/Bank Portal 等子页不再自动带导航；导航仅出现在 Home 页内容区内（按需求「与两个 Portal 同一容器内」）。
+
+### 10.2 首页：aside 置于 Portal 右侧、welcome 下方（`Home.tsx`）
+
+页面结构（本轮）：
+```
+Hero (Welcome 文字，顶部居中)
+└─ 同一容器 flex-row (max-w-5xl, mt-4, gap-8)
+     ├─ 左：Portal 卡片 grid (Client / Bank)  flex-1
+     └─ 右：<aside> 导航（最右，低于 welcome）
+```
+
+| 改动点 | 之前 | 本轮 |
+|---|---|---|
+| aside 起点 | 从页面顶部开始（全局侧栏） | **从 welcome 文字下方开始**，与 Portal 同容器 |
+| aside 水平位置 | 页面最右（全局） | 容器最右，紧邻 Portal 卡右侧 |
+| 边框 | — | **无新边框**（仅 `rounded-2xl` 圆角，无 border） |
+
+### 10.3 aside 仅靠「背景 + 字体」区分，不引入新颜色
+
+| 区分手段 | 取值 | 来源（均为既有 M3 颜色，无新增） |
+|---|---|---|
+| 背景 | `bg-[#EADDFF]`（primary-container） | M3 `primary-container` `#EADDFF` |
+| 标题字体 | `text-xs font-semibold tracking-[0.2em] uppercase text-[#6750A4]` | `primary` `#6750A4` |
+| 链接字体 | `text-base font-medium` / 激活态 `font-bold` | 字体字重区分 |
+| 链接颜色 | `text-[#21005D]`（primary-dark）/ 激活 `text-[#6750A4]` | `on-primary-container` / `primary` |
+| 激活/悬停底 | `bg-[#6750A4]/15`、`hover:bg-[#6750A4]/10` | 主色透明度，非新色 |
+| 圆角 | `rounded-2xl` / `rounded-xl` | 仅圆角，无边框 |
+
+> 说明：严格复用 §8 定义的 M3 调色板（`#6750A4` / `#EADDFF` / `#21005D`），**未引入任何新颜色**；区域差异仅由背景底色与字体（大小、字重、字距、大小写）体现，且**不增加可见边框**。
+
+### 10.4 视觉差异小结（本轮）
+
+| 维度 | §9 版本 | 本轮后 |
+|---|---|---|
+| 导航形态 | 全局右侧 Sider（满高） | Home 内容内 aside（welcome 下方、Portal 右侧） |
+| 可见边框 | 无 | 无（仍无边框） |
+| 区域区分 | 侧栏阴影/底色 | aside 仅靠 `#EADDFF` 背景 + 字体区分 |
+| 新颜色 | 无 | 无（沿用 M3 调色板） |
