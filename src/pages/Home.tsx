@@ -1,20 +1,12 @@
 import React from 'react';
 import { Card, Button, Typography } from 'antd';
 import { UserOutlined, BankOutlined } from '@ant-design/icons';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { SiteNav } from '../components/SiteNav';
 
 const { Title, Paragraph } = Typography;
 
 export const Home: React.FC = () => {
-  const location = useLocation();
-  const currentPath = location.pathname.split('/')[1] || 'home';
-
-  const navItems = [
-    { key: 'home', label: 'Home', to: '/' },
-    { key: 'client', label: 'Client Portal', to: '/client' },
-    { key: 'bank', label: 'Bank Portal', to: '/bank' },
-  ];
-
   return (
     <div className="min-h-[calc(100vh-64px)] flex flex-col">
       {/* Hero Section */}
@@ -74,30 +66,7 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Aside navigation: 同容器内最右侧，低于 welcome，无边框，靠背景+字体区分 */}
-          <aside className="w-full md:w-64 bg-[#EADDFF] rounded-2xl p-6 shrink-0">
-            <div className="text-xs font-semibold tracking-[0.2em] uppercase text-[#6750A4] mb-4">
-              Navigation
-            </div>
-            <nav className="flex flex-col gap-2">
-              {navItems.map((item) => {
-                const active = currentPath === item.key;
-                return (
-                  <Link
-                    key={item.key}
-                    to={item.to}
-                    className={
-                      'block px-4 py-3 rounded-xl text-base transition-colors ' +
-                      (active
-                        ? 'bg-[#6750A4]/15 text-[#6750A4] font-bold'
-                        : 'text-[#21005D] font-medium hover:bg-[#6750A4]/10')
-                    }
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
-          </aside>
+          <SiteNav />
         </div>
       </div>
     </div>

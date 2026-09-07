@@ -330,3 +330,23 @@ export default {
 修复后：§10 的 `flex flex-col md:flex-row` 生效 → 桌面端（≥768px）Portal 卡居左、`aside` 居右；`bg-[#EADDFF]`/`rounded-2xl`/`p-6` 等生效 → aside 恢复背景与字体区分；移动端（<768px）仍纵向堆叠（aside 在底部），符合响应式预期。
 
 > 备注：启用 Tailwind preflight 后，部分原生 HTML 元素默认样式会被重置，但 antd v5 采用 CSS-in-JS（`:where()` 低优先级选择器 + 组件类名）不受影响，构建与组件样式正常。
+
+---
+
+## 12. 交互修复：导航在所有页面常驻（提取为共享 SiteNav 组件）
+
+**问题现象：** §10 将导航 `aside` 仅放在 Home 页内容区内；点击「Enter Client/Bank Portal」进入子页后，导航消失（子页无导航），交互被破坏。
+**修复：** 将导航抽取为共享组件 `src/components/SiteNav.tsx`，并在 `Home` / `ClientPortal` / `BankPortal` 三个页面均渲染，保证导航在各页常驻。
+
+| 改动文件 | 改动 |
+|---|---|
+| `src/components/SiteNav.tsx`（新增） | 原 Home 内联 `aside` 导航抽取为独立组件（导航项、激活态、`#EADDFF` 背景、字体区分、无边框均保留） |
+| `src/pages/Home.tsx` | 删除内联 `aside`，改引用 `<SiteNav />`（位置/样式不变：welcome 下方、Portal 右侧） |
+| `src/pages/ClientPortal.tsx` | 内容包入 `flex flex-col md:flex-row` 行，主区 `flex-1 min-w-0` + 右侧 `<SiteNav />` |
+| `src/pages/BankPortal.tsx` | 同上，主区含两张 Card，右侧 `<SiteNav />`；`min-w-0` 防止内部表格溢出 |
+
+**布局行为（桌面 ≥768px）：** 每个页面均为「主内容区（左，flex-1）+ 导航面板（右，md:w-64）」；移动端（<768px）导航面板堆叠到主内容下方。
+**视觉/配色：** 沿用 §10 —— 仅 `#EADDFF` 背景 + 字体区分，无新边框、无新颜色。
+**构建验证：** `npx vite build` 通过。
+
+> 说明：由此前「导航仅首页存在」导致的「进入子页导航消失」问题已解决；同时保留首页要求的 aside 位置（welcome 下、Portal 右、无边框、背景+字体区分）。
