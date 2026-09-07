@@ -300,3 +300,33 @@ Hero (Welcome 文字，顶部居中)
 | 可见边框 | 无 | 无（仍无边框） |
 | 区域区分 | 侧栏阴影/底色 | aside 仅靠 `#EADDFF` 背景 + 字体区分 |
 | 新颜色 | 无 | 无（沿用 M3 调色板） |
+
+---
+
+## 11. 根因修复：补齐 PostCSS/Tailwind 配置（§10 样式缺失的真正原因）
+
+**问题现象：** §10 提交后，运行时 aside 失去样式（无背景/圆角）且堆叠到最底部而非右侧。
+**根因：** 项目缺少 `postcss.config.js`，导致 Vite 构建/开发时 **Tailwind 从未被编译**。`src/index.css` 中的 `@tailwind base/components/utilities` 指令无效，`src/**` 组件里所有 Tailwind 工具类（`flex`、`grid`、`max-w-*`、`rounded-*`、`bg-[#EADDFF]`、`md:flex-row` 等）均不生效；之前 CSS 中出现的 `EADDFF` 仅来自 `:root` 的 `--primary-light` 变量，并非 `.bg-[#EADDFF]` 类。这正是 §9「Portal 太宽」（grid/max-w 未生效）与 §10「aside 无样式、沉底」的共同根因。
+
+**修复：** 新增 `postcss.config.js`：
+
+```js
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+```
+
+**验证（`npx vite build` 后检查产物 CSS）：**
+| 检查项 | 修复前 | 修复后 |
+|---|---|---|
+| `.flex{display:flex}` | 不存在 | 存在 |
+| `@media (min-width:768px) .md\:flex-row` | 不存在 | 存在 |
+| `rounded-2xl` (`border-radius:1rem`) | 不存在 | 存在 |
+| `.bg-\[#EADDFF\]` 规则 | 不存在 | 存在 |
+
+修复后：§10 的 `flex flex-col md:flex-row` 生效 → 桌面端（≥768px）Portal 卡居左、`aside` 居右；`bg-[#EADDFF]`/`rounded-2xl`/`p-6` 等生效 → aside 恢复背景与字体区分；移动端（<768px）仍纵向堆叠（aside 在底部），符合响应式预期。
+
+> 备注：启用 Tailwind preflight 后，部分原生 HTML 元素默认样式会被重置，但 antd v5 采用 CSS-in-JS（`:where()` 低优先级选择器 + 组件类名）不受影响，构建与组件样式正常。
