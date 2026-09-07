@@ -2,15 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Material 3 (M3) 规范色板 — Baseline Scheme
+   角色映射见 design_doc.md §8
+   ============================================================ */
 :root {
-  --primary-color: #6366f1;      /* 主色调：现代靛蓝色 */
-  --primary-light: #818cf8;      /* 主色调亮色 */
-  --primary-dark: #4f46e5;       /* 主色调暗色 */
-  --bg-color: #f8fafc;           /* 背景色：浅灰白 */
-  --card-bg: #ffffff;            /* 卡片背景：纯白 */
-  --text-primary: #1e293b;       /* 主要文字：深蓝灰 */
-  --text-secondary: #64748b;     /* 次要文字：中灰 */
-  --border-color: #e2e8f0;       /* 边框颜色：浅灰 */
+  --primary-color: #6750A4;        /* M3 primary (tone 40) */
+  --primary-light: #EADDFF;        /* M3 primary-container (tone 90) */
+  --primary-dark: #21005D;         /* M3 on-primary-container (tone 10) */
+  --bg-color: #FFFBFE;             /* M3 background (tone 98) */
+  --card-bg: #FFFFFF;              /* M3 surface / surface-container */
+  --text-primary: #1C1B1F;         /* M3 on-surface (tone 10) */
+  --text-secondary: #49454F;       /* M3 on-surface-variant (tone 30) */
+  --border-color: #CAC4D0;         /* M3 outline-variant (tone 80) */
+  --m3-primary-rgb: 103, 80, 164;  /* #6750A4 用于透明色光晕 */
 }
 
 body {
@@ -22,56 +27,71 @@ body {
   min-height: 100vh;
 }
 
+/* 侧边栏样式 */
+.ant-layout-sider {
+  background: #ffffff;
+  border-right: 1px solid var(--border-color);
+  box-shadow: 2px 0 12px rgba(var(--m3-primary-rgb), 0.08);
+}
+
+.app-logo {
+  height: 44px;
+  width: auto;
+  display: block;
+  margin: 20px auto;
+}
+
 .ant-layout-header {
-  padding: 0 24px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 0 32px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
 }
 
 .page-container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 24px;
+  padding: 32px;
 }
 
 .ant-card {
   background: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-              0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px -12px rgba(var(--m3-primary-rgb), 0.25);
+  border: 1px solid var(--border-color);
   transition: all 0.3s ease;
   margin-bottom: 24px;
 }
 
 .ant-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
-              0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -12px rgba(var(--m3-primary-rgb), 0.35);
+  transform: translateY(-4px);
 }
 
 .section-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #1f2937;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
   margin-bottom: 24px;
+  letter-spacing: -0.3px;
 }
 
-.ant-form-
-
 .ant-menu {
-  border-bottom: none;
+  border-right: none;
+  background: transparent;
 }
 
 /* Custom Table Styles */
 .custom-table .ant-table {
   background: var(--card-bg);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
 }
 
 .custom-table .ant-table-thead > tr > th {
-  background: var(--bg-color);
+  background: #E7E0EC;          /* M3 surface-variant */
   color: var(--text-primary);
   border-bottom: 2px solid var(--border-color);
   font-weight: 600;
@@ -82,43 +102,42 @@ body {
 }
 
 .custom-table .ant-table-tbody > tr:hover > td {
-  background: rgba(99, 102, 241, 0.05) !important;
+  background: rgba(var(--m3-primary-rgb), 0.08) !important;
 }
 
 /* Custom Modal Styles */
 .custom-modal .ant-modal-content {
-  border-radius: 16px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
-              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
 }
 
 .custom-modal .ant-modal-header {
-  border-radius: 16px 16px 0 0;
+  border-radius: 20px 20px 0 0;
   border-bottom: 1px solid var(--border-color);
-  padding: 16px 24px;
+  padding: 18px 28px;
 }
 
 .custom-modal .ant-modal-body {
-  @apply p-6;
+  @apply p-7;
 }
 
 /* Custom Button Hover Effects */
 .ant-btn-primary {
   background: var(--primary-color);
   border: none;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 6px 16px -4px rgba(var(--m3-primary-rgb), 0.4);
   transition: all 0.3s ease;
 }
 
 .ant-btn-primary:hover {
-  background: var(--primary-light);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
+  background: var(--primary-light) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -4px rgba(var(--m3-primary-rgb), 0.5) !important;
 }
 
 /* 表单输入框样式 */
 .ant-input, .ant-select-selector {
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   border: 1px solid var(--border-color) !important;
   transition: all 0.3s ease;
 }
@@ -129,26 +148,26 @@ body {
 
 .ant-input:focus, .ant-select-selector:focus {
   border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(var(--m3-primary-rgb), 0.18) !important;
 }
 
 /* Badge样式 */
 .ant-badge .ant-badge-count {
   background: var(--primary-color);
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 10px -2px rgba(var(--m3-primary-rgb), 0.4);
 }
 
 /* Tag样式 */
 .ant-tag {
-  border-radius: 6px;
-  padding: 4px 8px;
+  border-radius: 10px;
+  padding: 4px 10px;
   font-weight: 500;
 }
 
 /* 标题样式 */
 h1, h2, h3, h4, h5 {
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* 添加动画效果 */
@@ -159,4 +178,17 @@ h1, h2, h3, h4, h5 {
 /* 图标样式 */
 .anticon {
   transition: transform 0.3s;
+}
+
+/* 侧边栏菜单选中态 */
+.ant-menu-item-selected {
+  background: rgba(var(--m3-primary-rgb), 0.12) !important;
+  border-radius: 12px;
+  color: var(--primary-dark) !important;
+  font-weight: 600;
+}
+
+.ant-menu-item:hover {
+  border-radius: 12px;
+  color: var(--primary-dark) !important;
 }

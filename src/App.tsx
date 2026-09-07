@@ -19,7 +19,10 @@ function App() {
         theme={{
           algorithm: theme.defaultAlgorithm,
           token: {
-            colorPrimary: '#1890ff',
+            colorPrimary: '#6750A4',
+            borderRadius: 10,
+            colorText: '#1C1B1F',
+            colorBorder: '#CAC4D0',
           },
         }}
       >

@@ -1,91 +1,57 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { Layout as AntLayout, Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { HomeOutlined, UserOutlined, BankOutlined, ExperimentOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined, BankOutlined } from '@ant-design/icons';
 import { ClientWalletModal } from './wallet/ClientWalletModal';
 import { BankWalletModal } from './wallet/BankWalletModal';
-// import { ConnectKitButton } from "connectkit";
 
-const { Header, Content } = AntLayout;
+const { Header, Content, Sider } = AntLayout;
 
 export const Layout: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname.split('/')[1] || 'home';
 
   return (
-    <AntLayout className="min-h-screen">
-      <Header 
-        className="bg-white shadow-sm p-0" 
-        style={{ 
-          height: 'auto',
-          lineHeight: 'normal',
-          padding: '12px 50px',
-          display: 'flex',
-          alignItems: 'center'
-        }}
-      >
-        <div className="flex items-center mr-8">
+    <AntLayout style={{ minHeight: '100vh' }}>
+      <AntLayout>
+        <Header className="ant-layout-header">
           <Link to="/">
-            <img 
-              src="/logo_nobg.png" 
-              alt="Logo" 
-              style={{ 
-                height: '40px',
-                width: 'auto'
-              }} 
-            />
+            <img src="/logo_nobg.png" alt="Logo" className="app-logo" style={{ margin: 0 }} />
           </Link>
-        </div>
-        <Menu 
-          mode="horizontal" 
-          className="border-0 flex-1"
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: '12px' }}>
+            <ClientWalletModal />
+            <BankWalletModal />
+          </div>
+        </Header>
+
+        <Content>
+          <Outlet />
+        </Content>
+      </AntLayout>
+
+      <Sider
+        width={240}
+        className="ant-layout-sider"
+        style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'auto' }}
+      >
+        <Menu
+          mode="inline"
           selectedKeys={[currentPath]}
-          style={{
-            minWidth: 0,
-            flex: 'auto',
-            fontSize: '16px',
-            fontWeight: 500
-          }}
+          onClick={({ key }) => navigate(`/${key === 'home' ? '' : key}`)}
+          style={{ fontSize: '15px', fontWeight: 500, borderRight: 'none' }}
         >
-          <Menu.Item 
-            key="home" 
-            icon={<HomeOutlined style={{ fontSize: '24px' }} />}
-            style={{ padding: '0 24px' }}
-          >
-            <Link to="/" className="text-gray-800 hover:text-blue-600 transition-colors">Home</Link>
+          <Menu.Item key="home" icon={<HomeOutlined style={{ fontSize: '20px' }} />}>
+            Home
           </Menu.Item>
-          <Menu.Item 
-            key="client" 
-            icon={<UserOutlined style={{ fontSize: '24px' }} />}
-            style={{ padding: '0 24px' }}
-          >
-            <Link to="/client" className="text-gray-800 hover:text-blue-600 transition-colors">Client Portal</Link>
+          <Menu.Item key="client" icon={<UserOutlined style={{ fontSize: '20px' }} />}>
+            Client Portal
           </Menu.Item>
-          <Menu.Item 
-            key="bank" 
-            icon={<BankOutlined style={{ fontSize: '24px' }} />}
-            style={{ padding: '0 24px' }}
-          >
-            <Link to="/bank" className="text-gray-800 hover:text-blue-600 transition-colors">Bank Portal</Link>
+          <Menu.Item key="bank" icon={<BankOutlined style={{ fontSize: '20px' }} />}>
+            Bank Portal
           </Menu.Item>
-          {/* <Menu.Item 
-            key="test" 
-            icon={<ExperimentOutlined style={{ fontSize: '24px' }} />}
-            style={{ padding: '0 24px' }}
-          >
-            <Link to="/test" className="text-gray-800 hover:text-blue-600 transition-colors">Test</Link>
-          </Menu.Item> */}
         </Menu>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: '12px' }}>
-          <ClientWalletModal />
-          <BankWalletModal />
-        </div>
-      </Header>
-      
-      <Content>
-        <Outlet />
-      </Content>
+      </Sider>
     </AntLayout>
   );
 };
