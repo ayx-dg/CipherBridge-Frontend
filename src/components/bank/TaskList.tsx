@@ -358,12 +358,12 @@ export const TaskList: React.FC = () => {
       <Card title="Bank Tasks" className="w-full">
         <div className="flex flex-col space-y-6">
           {/* Tabs Container */}
-          <div className="flex justify-center">
+          <div className="flex justify-center flex-wrap">
             <Radio.Group 
               value={activeTab} 
               onChange={e => setActiveTab(e.target.value)}
               size="large"
-              className="shadow-sm"
+              className="shadow-sm flex-wrap"
             >
               <Radio.Button value="pending">
                 <div className="px-2 py-1">
@@ -396,7 +396,7 @@ export const TaskList: React.FC = () => {
               <Spin size="large" />
             </div>
           ) : (
-            <div className="mt-4">
+            <div className="mt-4 overflow-x-auto">
               <Table
                 dataSource={
                   activeTab === 'pending' 
@@ -408,6 +408,7 @@ export const TaskList: React.FC = () => {
                 columns={columns}
                 rowKey="taskId"
                 pagination={false}
+                className="custom-table"
               />
             </div>
           )}

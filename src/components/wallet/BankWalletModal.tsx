@@ -105,7 +105,7 @@ export const BankWalletModal: React.FC = () => {
         onClick={() => setIsModalOpen(true)}
         type="primary"
       >
-        Bank Account
+        <span className="!hidden sm:!inline">Bank Account</span>
       </Button>
 
       <Modal

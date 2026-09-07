@@ -106,7 +106,7 @@ export const ClientWalletModal: React.FC = () => {
         type="primary"
         className="mr-2"
       >
-        Client Account
+        <span className="!hidden sm:!inline">Client Account</span>
       </Button>
 
       <Modal

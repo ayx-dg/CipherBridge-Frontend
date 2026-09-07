@@ -369,3 +369,50 @@ export default {
 **构建验证：** `npx vite build` 通过（未被 `tsc` 阻断）。
 
 > 说明：桌面端布局、配色、无边框样式均不受影响；仅移动端顺序改变。
+
+---
+
+## 14. main 分支 vs 当前 experiment 分支 · 样式改动对比
+
+**目的：** 对比 `main`（旧基线，靛蓝/蓝，顶栏布局）与 `experiment`（当前，M3 紫色，aside 导航）的样式与品牌差异，便于回溯。
+**分支关系：** `experiment` 领先 `main` 5 个提交。
+
+### 14.1 核心差异总览
+
+| 维度 | main（旧基线） | experiment（当前） |
+|---|---|---|
+| 主色 | 靛蓝 `#6366F1` + antd 蓝 `#1890FF` 混用 | M3 紫 `#6750A4` 统一（基线） |
+| 背景 | 冷灰白 `#F8FAFC` | M3 `#FFFBFE` |
+| 导航结构 | 顶部横向 `Header` 菜单 | aside 导航（Home 内：welcome 下、Portal 右；子页右栏） |
+| 布局 | 顶栏 + 居中 `max-w-5xl` | aside + `flex-row` 主从布局 |
+| 圆角 | 6–16px | 10–20px（更圆润） |
+| 阴影 | 中性黑灰 | M3 主色紫色光晕 |
+| 标题字重 | 600 | 700 |
+| Tailwind | **未生效**（无 PostCSS） | **生效**（新增 `postcss.config.js`） |
+
+### 14.2 样式相关文件变更（相对 main）
+
+| 文件 | 状态 | 说明 |
+|---|---|---|
+| `postcss.config.js` | **新增** | 启用 `tailwindcss`+`autoprefixer`，使所有 Tailwind 工具类生效（根因修复，见 §11） |
+| `src/index.css` | 大改 | `:root` 换为 M3 色板；卡片/按钮/输入框/表格/弹窗阴影与圆角焕新；新增侧栏/aside、`ant-message` 置底、响应式 Header 等样式 |
+| `src/App.tsx` | 改动 | antd `colorPrimary` `#1890FF`→`#6750A4`，`colorText`/`colorBorder` 同步 M3 |
+| `src/components/Layout.tsx` | 重写 | 移除 `Sider`；`Header` 仅 Logo（文字标识）+ 钱包按钮；无全高侧栏 |
+| `src/components/SiteNav.tsx` | **新增** | 共享导航组件（`#EADDFF` 背景 + 字体区分、无边框、`order-first` 移动端置顶） |
+| `src/pages/Home.tsx` | 大改 | M3 紫色渐变标题；Portal 卡 `max-w-4xl`；`p-6 sm:p-8`、按钮 `px-6 sm:px-8`；嵌入 `SiteNav` |
+| `src/pages/ClientPortal.tsx` / `BankPortal.tsx` | 改动 | 内容列 `w-full min-w-0`、`SiteNav` 右栏、Bank 面板 `h-[400px] md:h-[600px]` |
+| `src/components/client/Registration.tsx` | 改动 | `Col span={12}`→`xs={24} md={12}`（移动端单列，修溢出） |
+| `src/components/client/TaskResults.tsx` | 改动 | 表格 `overflow-x-auto`、页签 `flex-wrap`、extra 按钮手机图标化 |
+| `src/components/bank/TaskList.tsx` | 改动 | 表格加 `custom-table`、`overflow-x-auto`、页签 `flex-wrap` |
+| `src/components/wallet/*.tsx` | 改动 | 按钮文字 `!hidden sm:!inline`（手机只显图标） |
+
+### 14.3 交互上的结构性变化（影响视觉布局）
+
+- **导航**：从「全局顶栏横向菜单」→「`SiteNav` 组件」。Home 页内嵌于内容区（welcome 下方、Portal 右侧）；Client/Bank 子页作为右侧边栏；移动端置顶排列。
+- **Logo**：图片被去除，改用 `Cipher`(深)/`Bridge`(紫) 文字标识（原图片资源缺失，避免破图）。
+
+### 14.4 验证状态
+
+- 移动端（320/360/375/393/414）与桌面（1280）均无页面级水平溢出、无越界元素（`scripts/mobileCheck.cjs`，可复用）。
+- `npx vite build` 通过。
+- 已发布生产：https://cipherbridge-fhe-ayxdg.netlify.app

@@ -202,7 +202,7 @@ export const Registration: React.FC = () => {
     <Card title="Client Registration">
       {contextHolder}
       <Row gutter={24}>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Space direction="vertical" size="middle" className="w-full">
             <Button
               type="primary"
@@ -241,7 +241,7 @@ export const Registration: React.FC = () => {
         </Col>
         
         {keys && (
-          <Col span={12}>
+          <Col xs={24} md={12}>
             <Space direction="vertical" className="w-full">
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="mb-4">

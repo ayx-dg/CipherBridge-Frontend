@@ -496,17 +496,17 @@ export const TaskResults: React.FC = () => {
             icon={<PlusOutlined />}
             onClick={() => setIsNewTaskModalVisible(true)}
           >
-            New Business Task
+            <span className="!hidden sm:!inline">New Business Task</span>
           </Button>
         }
       >
         <div className="flex flex-col space-y-6">
-          <div className="flex justify-center">
+          <div className="flex justify-center flex-wrap">
             <Radio.Group 
               value={activeTab} 
               onChange={e => setActiveTab(e.target.value)}
               size="large"
-              className="shadow-sm"
+              className="shadow-sm flex-wrap"
             >
               <Radio.Button value="pending">
                 <div className="px-2 py-1">
@@ -523,7 +523,7 @@ export const TaskResults: React.FC = () => {
               <Radio.Button value="published">
               <div className="px-2 py-1">
                 <span>Published {" "}</span>
-                <Badge 
+                <Badge
                   count={publishedTasks.length} 
                   className="ml-2"
                   style={{ backgroundColor: '#52c41a' }}  // 使用 Ant Design 的标准绿色
@@ -533,19 +533,21 @@ export const TaskResults: React.FC = () => {
             </Radio.Group>
           </div>
 
-          <Table
-            dataSource={
-              activeTab === 'pending' 
-                ? pendingTasks 
-                : activeTab === 'completed' 
-                  ? completedTasks 
-                  : publishedTasks
-            }
-            columns={columns}
-            rowKey="id"
-            pagination={false}
-            className="custom-table"
-          />
+          <div className="overflow-x-auto">
+            <Table
+              dataSource={
+                activeTab === 'pending' 
+                  ? pendingTasks 
+                  : activeTab === 'completed' 
+                    ? completedTasks 
+                    : publishedTasks
+              }
+              columns={columns}
+              rowKey="id"
+              pagination={false}
+              className="custom-table"
+            />
+          </div>
         </div>
       </Card>
 

@@ -17,7 +17,7 @@ export const BankPortal: React.FC = () => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        <div className="flex-1 min-w-0 space-y-6">
+        <div className="flex-1 min-w-0 w-full space-y-6">
           {/* 身份认证区域 */}
           <Card className="mb-8 shadow-md">
             <BankRegistration />
@@ -37,7 +37,7 @@ export const BankPortal: React.FC = () => {
                     </span>
                   ),
                   children: (
-                    <div className="h-[600px] overflow-auto">
+                    <div className="h-[400px] md:h-[600px] overflow-auto">
                       <TaskList />
                     </div>
                   ),
@@ -51,7 +51,7 @@ export const BankPortal: React.FC = () => {
                     </span>
                   ),
                   children: (
-                    <div className="flex flex-col h-[600px]">
+                    <div className="flex flex-col h-[400px] md:h-[600px]">
                       <div className="mb-4">
                         <DataEncryption />
                       </div>

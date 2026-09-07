@@ -48,6 +48,13 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .ant-layout-header {
+    padding: 0 16px;
+  }
 }
 
 .page-container {
@@ -81,6 +88,13 @@ body {
 .ant-menu {
   border-right: none;
   background: transparent;
+}
+
+/* 通知提示定位到视口底部，避免遮挡顶部 Header 与页面标题 */
+.ant-message,
+.ant-message.ant-message-top {
+  top: auto !important;
+  bottom: 24px !important;
 }
 
 /* Custom Table Styles */

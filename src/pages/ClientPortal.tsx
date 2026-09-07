@@ -15,7 +15,7 @@ export const ClientPortal: React.FC = () => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        <div className="flex-1 min-w-0 space-y-8">
+        <div className="flex-1 min-w-0 w-full space-y-8">
           <Registration />
           <TaskResults />
         </div>
