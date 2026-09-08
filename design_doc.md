@@ -416,3 +416,28 @@ export default {
 - 移动端（320/360/375/393/414）与桌面（1280）均无页面级水平溢出、无越界元素（`scripts/mobileCheck.cjs`，可复用）。
 - `npx vite build` 通过。
 - 已发布生产：https://cipherbridge-fhe-ayxdg.netlify.app
+
+---
+
+## 15. 导航合并进顶部 Header（RBC 风格）+ 子页返回按钮
+
+**目标：** 参考 RBC（rbcroyalbank.com/personal.html）顶栏导航布局，将原先散落的 `SiteNav`（aside 侧栏）合并进顶部 `Header`，并为每个子页增加返回首页入口。
+
+**布局（桌面 md+）：** 顶栏单行：品牌标识(左) → 横向导航链接(中，活动项紫色+底部边框) → 钱包按钮(右，`ml-auto`)。
+**布局（移动端 <md）：** 顶栏：品牌标识(左) → 钱包图标按钮 + 汉堡菜单(右)。点击汉堡弹出下拉导航面板（活动项紫色+左侧边框+浅紫背景）。
+
+| 维度 | 之前（§12 aside SiteNav） | 现在（§15 Header 顶栏） |
+|---|---|---|
+| 导航位置 | Home 内嵌 + 子页右侧栏 | 全局顶部 Header |
+| 活动态 | 粉色块背景 | 紫色文字 + 底部 2px 边框（RBC 式） |
+| 移动端 | aside `order-first` 置顶 | 汉堡菜单 + 下拉面板 |
+| 子页返回 | 无 | 顶部「← Back to Home」按钮 |
+| 子页布局 | 左侧内容 + 右侧 aside | 内容全宽（去除 aside） |
+
+**改动文件：**
+- `src/components/Layout.tsx`：重写 Header（品牌 + 桌面导航 + 钱包 + 移动端汉堡/下拉面板）。
+- `src/components/SiteNav.tsx`：**删除**（导航并入 Layout）。
+- `src/pages/Home.tsx`：移除 `SiteNav`，Portal 卡改为居中两列网格。
+- `src/pages/ClientPortal.tsx` / `src/pages/BankPortal.tsx`：移除 `SiteNav`，新增「Back to Home」按钮（`ArrowLeftOutlined` + `Link to="/"`），内容改全宽。
+
+**验证：** `npx vite build` 通过；`scripts/mobileCheck.cjs` 在 320/360/375/393/414/1280 全部无溢出；Playwright 视觉确认桌面顶栏链接/活动下划线正常、移动端汉堡下拉面板可展开、子页返回按钮与全宽内容布局正常。

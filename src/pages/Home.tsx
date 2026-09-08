@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Button, Typography } from 'antd';
 import { UserOutlined, BankOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { SiteNav } from '../components/SiteNav';
 
 const { Title, Paragraph } = Typography;
 
@@ -20,10 +19,9 @@ export const Home: React.FC = () => {
           </Paragraph>
         </div>
 
-        {/* Content row: Portal cards (left) + Aside nav (right, same container) */}
-        <div className="w-full max-w-5xl mx-auto px-4 mt-4 flex flex-col md:flex-row gap-8 items-start">
-          {/* Portal Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 flex-1 w-full">
+        {/* Content: Portal cards, centered */}
+        <div className="w-full max-w-5xl mx-auto px-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
             <Card
               hoverable
               className="transform transition-all duration-300 hover:scale-105 shadow-lg"
@@ -64,9 +62,6 @@ export const Home: React.FC = () => {
               </div>
             </Card>
           </div>
-
-          {/* Aside navigation: 同容器内最右侧，低于 welcome，无边框，靠背景+字体区分 */}
-          <SiteNav />
         </div>
       </div>
     </div>
