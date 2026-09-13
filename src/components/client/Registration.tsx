@@ -90,7 +90,8 @@ export const Registration: React.FC = () => {
 
   const handleGenerateKeys = async () => {
     if (!wallet) {
-      messageApi.error('Please create an account first!');
+      messageApi.warning('Please create a client account first!');
+      window.dispatchEvent(new Event('openClientWalletModal'));
       return;
     }
 
@@ -209,11 +210,17 @@ export const Registration: React.FC = () => {
               icon={<KeyOutlined />}
               onClick={handleGenerateKeys}
               size="large"
-              disabled={keys !== null || !wallet}
+              disabled={keys !== null}
               block
             >
               Generate FHE Keys
             </Button>
+
+            {!wallet && (
+              <span className="text-xs text-gray-500">
+                No client account found. Click the button above to create one.
+              </span>
+            )}
 
             <Button
               type="primary"

@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "contributors": [
+    "JupiterXiaoxiaoYu",
+    "ayx-dg",
+    "knissvon"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

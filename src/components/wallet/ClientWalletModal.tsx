@@ -36,12 +36,18 @@ export const ClientWalletModal: React.FC = () => {
       setForceUpdate(prev => prev + 1);
     };
 
+    const handleOpenModal = () => {
+      setIsModalOpen(true);
+    };
+
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('clientWalletChanged', handleStorageChange);
+    window.addEventListener('openClientWalletModal', handleOpenModal);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('clientWalletChanged', handleStorageChange);
+      window.removeEventListener('openClientWalletModal', handleOpenModal);
     };
   }, []);
 
