@@ -5,7 +5,8 @@
 
 - 仓库缺少 `tsconfig.json`，`npm run build`（`tsc && vite build`）会失败；用 `npx vite build` 直接构建。
 - 在 `experiment` 分支上开发，完成后 `git push origin experiment`（用 gh 账号 `ayx-dg` 推送）。
-- 发布到 Netlify（手动部署已构建产物，避免触发远端 build）：
+- 自动部署：推送到 `experiment` 会触发 `.github/workflows/netlify-deploy.yml`（install → `npx vite build` → 写 `dist/_redirects` → `netlify deploy --prod --no-build`），约 2 分钟发布到 https://cipherbridge-fhe-ayxdg.netlify.app 。使用的仓库 Secrets：`NETLIFY_AUTH_TOKEN`、`NETLIFY_SITE_ID`。`gh run list -R ayx-dg/CipherBridge-Frontend --branch experiment` 查看状态。
+- 手动部署（备用，等同于自动流程）：
   ```bash
   printf '/*    /index.html   200\n' > dist/_redirects
   env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy \
