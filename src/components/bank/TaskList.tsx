@@ -83,7 +83,7 @@ export const TaskList: React.FC = () => {
       setLoading(true);
       const storedWallet = localStorage.getItem('bank_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your account first!');
+        messageApi.error('请先连接您的账户！');
         return;
       }
 
@@ -121,7 +121,7 @@ export const TaskList: React.FC = () => {
       setPublishedTasks(formatTasks(published));
     } catch (error) {
       console.error('Failed to fetch tasks:', error);
-      messageApi.error('Failed to load tasks');
+      messageApi.error('任务加载失败');
     } finally {
       setLoading(false);
     }
@@ -142,7 +142,7 @@ export const TaskList: React.FC = () => {
       setUserDataLoading(true);
       const storedWallet = localStorage.getItem('bank_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your bank account first!');
+        messageApi.error('请先连接您的银行账户！');
         return;
       }
 
@@ -168,10 +168,10 @@ export const TaskList: React.FC = () => {
       console.log('data', data);
 
       setUserData(data);
-      messageApi.success('User data retrieved successfully!');
+      messageApi.success('用户数据获取成功！');
     } catch (error: any) {
       console.error('Failed to get user data:', error);
-      messageApi.error('Failed to get user data: ' + error.message);
+      messageApi.error('获取用户数据失败：' + error.message);
     } finally {
       setUserDataLoading(false);
     }
@@ -183,7 +183,7 @@ export const TaskList: React.FC = () => {
       setComputationLoading(true);
       const storedWallet = localStorage.getItem('bank_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your account first!');
+        messageApi.error('请先连接您的账户！');
         return;
       }
       
@@ -202,13 +202,13 @@ export const TaskList: React.FC = () => {
       
       // 保存计算结果
       setComputationResult(computationResponse.result);
-      messageApi.success('FHE computation completed successfully!');
+      messageApi.success('FHE 计算完成！');
     } catch (error: any) {
       console.error('Failed to compute result:', error);
       if (error.response?.data?.message) {
-        messageApi.error('Computation failed: ' + error.response.data.message);
+        messageApi.error('计算失败：' + error.response.data.message);
       } else {
-        messageApi.error('Failed to compute result: ' + error.message);
+        messageApi.error('计算结果失败：' + error.message);
       }
     } finally {
       setComputationLoading(false);
@@ -221,7 +221,7 @@ export const TaskList: React.FC = () => {
       setPublishLoading(true);
       const storedWallet = localStorage.getItem('bank_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your account first!');
+        messageApi.error('请先连接您的账户！');
         return;
       }
 
@@ -247,7 +247,7 @@ export const TaskList: React.FC = () => {
       const receipt = await tx.wait();
       console.log('Transaction confirmed:', receipt);
 
-      messageApi.success('Task completed successfully!');
+      messageApi.success('任务完成！');
       setIsModalVisible(false);
       setCurrentTask(null);
       setUserData(null);
@@ -255,7 +255,7 @@ export const TaskList: React.FC = () => {
       fetchTasks();
     } catch (error: any) {
       console.error('Failed to publish result:', error);
-      messageApi.error('Failed to publish result: ' + error.message);
+      messageApi.error('结果发布失败：' + error.message);
     } finally {
       setPublishLoading(false);
     }
@@ -270,12 +270,12 @@ export const TaskList: React.FC = () => {
 
   const columns = [
     {
-      title: 'Task ID',
+      title: '任务 ID',
       dataIndex: 'taskId',
       key: 'taskId',
     },
     {
-      title: 'User Address',
+      title: '用户地址',
       dataIndex: 'userAddress',
       key: 'userAddress',
       render: (text: string) => (
@@ -287,38 +287,38 @@ export const TaskList: React.FC = () => {
       ),
     },
     {
-      title: 'Business Type',
+      title: '业务类型',
       dataIndex: 'taskType',
       key: 'taskType',
       render: (text: string) => <Tag color="blue">{text.toUpperCase()}</Tag>,
     },
     {
-      title: 'Created At',
+      title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (timestamp: number) => new Date(timestamp).toLocaleString(),
     },
     {
-      title: 'Status',
+      title: '状态',
       key: 'status',
       render: (_, record: ContractTask) => (
         <Tag color={
           !record.isCompleted 
             ? 'blue' 
-            : record.isPublished 
+            : record.is已发布 
               ? 'green' 
               : 'orange'
         }>
           {!record.isCompleted 
-            ? 'Pending' 
-            : record.isPublished 
-              ? 'Published' 
-              : 'Completed'}
+            ? '待处理' 
+            : record.is已发布 
+              ? '已发布' 
+              : '已完成'}
         </Tag>
       )
     },
     {
-      title: 'Action',
+      title: '操作',
       key: 'action',
       render: (_, record: ContractTask) => (
         <Space>
@@ -327,15 +327,15 @@ export const TaskList: React.FC = () => {
               type="primary"
               onClick={() => handleProcessTask(record)}
             >
-              Process
+              处理
             </Button>
           )}
-          {record.isCompleted && !record.isPublished && (
+          {record.isCompleted && !record.is已发布 && (
             <Button type="default" disabled>
-              Waiting for User
+              等待用户处理
             </Button>
           )}
-          {record.isPublished && (
+          {record.is已发布 && (
             <Button 
               type="link" 
               onClick={() => {
@@ -344,7 +344,7 @@ export const TaskList: React.FC = () => {
                 setIsResultModalVisible(true);
               }}
             >
-              View Result
+              查看结果
             </Button>
           )}
         </Space>
@@ -355,7 +355,7 @@ export const TaskList: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <Card title="Bank Tasks" className="w-full">
+      <Card title="银行任务" className="w-full">
         <div className="flex flex-col space-y-6">
           {/* Tabs Container */}
           <div className="flex justify-center flex-wrap">
@@ -367,19 +367,19 @@ export const TaskList: React.FC = () => {
             >
               <Radio.Button value="pending">
                 <div className="px-2 py-1">
-                  <span>Pending Tasks {" "}</span>
+                  <span>待处理任务 {" "}</span>
                   <Badge count={pendingTasks.length} className="ml-2" />
                 </div>
               </Radio.Button>
               <Radio.Button value="completed">
                 <div className="px-2 py-1">
-                  <span>Completed Unpublished {" "}</span>
+                  <span>已完成未发布 {" "}</span>
                   <Badge count={completedTasks.length} className="ml-2" />
                 </div>
               </Radio.Button>
               <Radio.Button value="published">
               <div className="px-2 py-1">
-                <span>Published {" "}</span>
+                <span>已发布 {" "}</span>
                 <Badge 
                   count={publishedTasks.length} 
                   className="ml-2"
@@ -416,7 +416,7 @@ export const TaskList: React.FC = () => {
       </Card>
 
       <Modal
-        title={`Process Task: ${currentTask?.taskId}`}
+        title={`处理任务：${currentTask?.taskId}`}
         open={isModalVisible}
         onCancel={() => {
           setIsModalVisible(false);
@@ -428,11 +428,11 @@ export const TaskList: React.FC = () => {
       >
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold mb-2">Task Details:</h3>
+            <h3 className="text-lg font-semibold mb-2">任务详情：</h3>
             <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-              <p><strong>User Address:</strong> {currentTask?.userAddress}</p>
-              <p><strong>Business Type:</strong> {currentTask?.taskType}</p>
-              <p><strong>Created At:</strong> {currentTask?.createdAt && 
+              <p><strong>用户地址：</strong> {currentTask?.userAddress}</p>
+              <p><strong>业务类型：</strong> {currentTask?.taskType}</p>
+              <p><strong>创建时间：</strong> {currentTask?.createdAt && 
                 new Date(currentTask.createdAt).toLocaleString()}</p>
             </div>
           </div>
@@ -447,7 +447,7 @@ export const TaskList: React.FC = () => {
                 disabled={!!userData}
                 block
               >
-                Request User Data According to Business Type
+                按业务类型请求用户数据
               </Button>
               {userData && (
                 <div className="mt-2 space-y-2">
@@ -458,7 +458,7 @@ export const TaskList: React.FC = () => {
                       onClick={() => setIsDataModalVisible(true)}
                       className="ml-2"
                     >
-                      View Data
+                      查看数据
                     </Button>
                   </div>
                 </div>
@@ -474,18 +474,18 @@ export const TaskList: React.FC = () => {
                 disabled={!userData || !!computationResult}
                 block
               >
-                Request FHE Computation
+                请求 FHE 计算
               </Button>
               {computationResult && (
                 <div className="mt-2 space-y-2">
                   <div className="p-3 bg-gray-50 rounded-lg flex justify-between items-center">
-                    <Text type="success">Computation completed successfully!</Text>
+                    <Text type="success">计算完成！</Text>
                     <Button 
                       type="link" 
                       onClick={() => setIsResultModalVisible(true)}
                       className="ml-2"
                     >
-                      View Result
+                      查看结果
                     </Button>
                   </div>
                 </div>
@@ -501,7 +501,7 @@ export const TaskList: React.FC = () => {
                 disabled={!computationResult}
                 block
               >
-                Publish Result and Complete Task
+                发布结果并完成任务
               </Button>
             </div>
           </div>
@@ -509,7 +509,7 @@ export const TaskList: React.FC = () => {
       </Modal>
 
       <Modal
-        title="User Data Details"
+        title="用户数据详情"
         open={isDataModalVisible}
         onCancel={() => {
           setIsDataModalVisible(false);
@@ -524,18 +524,18 @@ export const TaskList: React.FC = () => {
               <Card key={index} size="small" className="shadow-sm">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <Text strong>Data Entry {index + 1} {" "} </Text>
+                    <Text strong>数据条目 {index + 1} {" "} </Text>
                     <Tag color="blue">{entry.dataType}</Tag>
                   </div>
                   <div className="grid grid-cols-1 gap-2 mt-2">
                     <div>
-                      <Text type="secondary">Bank Address:</Text>
+                      <Text type="secondary">银行地址：</Text>
                       <div className="font-mono bg-gray-50 p-2 rounded text-sm mt-1">
                         {entry.bankAddress}
                       </div>
                     </div>
                     <div>
-                      <Text type="secondary">Encrypted Data:</Text>
+                      <Text type="secondary">加密数据：</Text>
                       <div className="font-mono bg-gray-50 p-2 rounded text-sm mt-1">
                         <div className="break-all">
                           {expandedData[index] 
@@ -549,12 +549,12 @@ export const TaskList: React.FC = () => {
                           size="small"
                           className="mt-1 p-0"
                         >
-                          {expandedData[index] ? 'Show Less' : 'Show More'}
+                          {expandedData[index] ? '收起' : '展开'}
                         </Button>
                       </div>
                     </div>
                     <div>
-                      <Text type="secondary">Expiry Date:</Text>
+                      <Text type="secondary">过期时间：</Text>
                       <div className="text-sm mt-1">
                         {new Date(entry.expiryDate * 1000).toLocaleString()}
                       </div>
@@ -568,7 +568,7 @@ export const TaskList: React.FC = () => {
       </Modal>
 
       <Modal
-        title="Computation Result"
+        title="计算结果"
         open={isResultModalVisible}
         onCancel={() => {
           setIsResultModalVisible(false);
@@ -581,18 +581,18 @@ export const TaskList: React.FC = () => {
           <Card size="small" className="shadow-sm">
             <div className="space-y-2">
               <div className="flex justify-between items-center gap-2">
-                <Text strong>Task ID: {currentTask?.taskId} {" "} </Text>
-                <Tag color="green">Completed</Tag>
+                <Text strong>任务 ID：{currentTask?.taskId} {" "} </Text>
+                <Tag color="green">已完成</Tag>
               </div>
               <div className="grid grid-cols-1 gap-2 mt-2">
                 <div>
-                  <Text type="secondary">Business Type:</Text>
+                  <Text type="secondary">业务类型：</Text>
                   <div className="text-sm mt-1">
                     {currentTask?.taskType}
                   </div>
                 </div>
                 <div>
-                  <Text type="secondary">Encrypted Result:</Text>
+                  <Text type="secondary">加密结果：</Text>
                   <div className="font-mono bg-gray-50 p-2 rounded text-sm mt-1">
                     <div className="break-all">
                       {expandedResult 
@@ -606,13 +606,13 @@ export const TaskList: React.FC = () => {
                       size="small"
                       className="mt-1 p-0"
                     >
-                      {expandedResult ? 'Show Less' : 'Show More'}
+                      {expandedResult ? '收起' : '展开'}
                     </Button>
                   </div>
                 </div>
                 {currentTask?.signature && currentTask?.signature !== "0x" && (
                   <div>
-                    <Text type="secondary">Signature:</Text>
+                    <Text type="secondary">签名：</Text>
                     <div className="font-mono bg-gray-50 p-2 rounded text-sm mt-1">
                       <div className="break-all">
                         {currentTask.signature}
@@ -624,10 +624,10 @@ export const TaskList: React.FC = () => {
                           className="mt-1 p-0"
                           onClick={() => {
                             navigator.clipboard.writeText(currentTask.signature);
-                            messageApi.success('Signature copied to clipboard!');
+                            messageApi.success('签名已复制到剪贴板！');
                           }}
                         >
-                          Copy
+                          复制
                         </Button>
                         {/* <Button
                           type="link"
@@ -654,7 +654,7 @@ export const TaskList: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <Text type="secondary">Computation Time:</Text>
+                  <Text type="secondary">计算时间：</Text>
                   <div className="text-sm mt-1">
                     {new Date().toLocaleString()}
                   </div>

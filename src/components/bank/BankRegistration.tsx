@@ -63,7 +63,7 @@ export const BankRegistration: React.FC = () => {
     try {
       const storedKeys = localStorage.getItem('bank_wallet');
       if (!storedKeys) {
-        messageApi.error('Please generate bank keys first!');
+        messageApi.error('请先生成银行密钥！');
         return;
       }
   
@@ -103,10 +103,10 @@ export const BankRegistration: React.FC = () => {
       localStorage.setItem('bankInfo', JSON.stringify(newBankInfo));
       setBankInfo(newBankInfo);
       setForceUpdate(prev => prev + 1);
-      messageApi.success('Bank registration successful!');
+      messageApi.success('银行注册成功！');
       form.resetFields();
     } catch (error) {
-      messageApi.error('Registration failed!');
+      messageApi.error('注册失败！');
       console.error('Registration failed:', error);
     }
   };
@@ -137,9 +137,9 @@ export const BankRegistration: React.FC = () => {
       window.dispatchEvent(new Event('bankWalletChanged'));
       window.dispatchEvent(new Event('storage'));
       
-      messageApi.success('Bank registration and all related data have been revoked successfully!');
+      messageApi.success('银行注册及相关数据已成功撤销！');
     } catch (error) {
-      messageApi.error('Failed to revoke registration!');
+      messageApi.error('撤销注册失败！');
       console.error('Revoke failed:', error);
     }
   };
@@ -155,7 +155,7 @@ export const BankRegistration: React.FC = () => {
                 <Space direction="vertical" className="w-full" size="large">
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <Text type="secondary">Bank WeID</Text>
+                      <Text type="secondary">银行 WeID</Text>
                     </div>
                     <Paragraph copyable className="font-mono bg-gray-50 p-3 rounded mb-0">
                       {bankInfo.weId}
@@ -164,7 +164,7 @@ export const BankRegistration: React.FC = () => {
 
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <Text type="secondary">Public Key</Text>
+                      <Text type="secondary">公钥</Text>
                     </div>
                     <Paragraph copyable className="font-mono bg-gray-50 p-3 rounded mb-0 break-all">
                       {bankInfo.publicKey}
@@ -173,23 +173,23 @@ export const BankRegistration: React.FC = () => {
 
                   <Row gutter={24}>
                     <Col span={12}>
-                      <Text type="secondary">Registration Time</Text>
+                      <Text type="secondary">注册时间</Text>
                       <div className="font-mono bg-gray-50 p-3rounded mt-1">
                         {new Date(bankInfo.registrationTime).toLocaleString()}
                       </div>
                     </Col>
                     <Col span={6}>
-                      <Text type="secondary">Bank ID</Text>
+                      <Text type="secondary">银行 ID</Text>
                       <div className="font-mono bg-gray-50 p-3rounded mt-1">
                         #{bankInfo.id}
                       </div>
                     </Col>
                     <Col span={6}>
-                      <Text type="secondary">Status</Text>
+                      <Text type="secondary">状态</Text>
                       <div className="bg-gray-50 p-3 rounded mt-1">
                         <Badge 
                           status={bankInfo.isActive ? "success" : "error"} 
-                          text={bankInfo.isActive ? "Active" : "Inactive"}
+                          text={bankInfo.isActive ? "已激活" : "未激活"}
                         />
                       </div>
                     </Col>
@@ -198,14 +198,14 @@ export const BankRegistration: React.FC = () => {
               </Col>
 
               <Col span={8} className="text-right">
-                <Tooltip title="Revoke bank registration and clear all data">
+                <Tooltip title="撤销银行注册并清除所有数据">
                   <Button 
                     danger
                     icon={<DeleteOutlined />}
                     onClick={handleRevoke}
                     size="large"
                   >
-                    Revoke Registration
+                    撤销注册
                   </Button>
                 </Tooltip>
               </Col>
@@ -215,7 +215,7 @@ export const BankRegistration: React.FC = () => {
           <Card>
             <Title level={4} className="mb-6 flex items-center">
               <BankOutlined className="mr-2" />
-              Bank Registration
+              银行注册
             </Title>
             <Form
               form={form}
@@ -224,12 +224,12 @@ export const BankRegistration: React.FC = () => {
             >
               <Form.Item
                 name="weId"
-                label="Bank WeID"
-                rules={[{ required: true, message: 'Please input your WeID!' }]}
+                label="银行 WeID"
+                rules={[{ required: true, message: '请输入您的 WeID！' }]}
               >
                 <Input 
                   prefix={<KeyOutlined className="text-gray-400" />}
-                  placeholder="Enter your WeID"
+                  placeholder="请输入您的 WeID"
                 />
               </Form.Item>
 
@@ -240,7 +240,7 @@ export const BankRegistration: React.FC = () => {
                   icon={<CheckCircleOutlined />}
                   size="large"
                 >
-                  Register Bank
+                  注册银行
                 </Button>
               </Form.Item>
             </Form>

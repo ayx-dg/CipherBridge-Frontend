@@ -54,7 +54,7 @@ export const BankWalletModal: React.FC = () => {
     setWallet(walletInfo);
     localStorage.setItem('bank_wallet', JSON.stringify(walletInfo));
     window.dispatchEvent(new Event('bankWalletChanged'));
-    messageApi.success('New bank wallet generated successfully!');
+    messageApi.success('新银行钱包生成成功！');
   };
 
   const handleImportPrivateKey = () => {
@@ -74,9 +74,9 @@ export const BankWalletModal: React.FC = () => {
       window.dispatchEvent(new Event('bankWalletChanged'));
       setShowImport(false);
       setImportPrivateKey('');
-      messageApi.success('Bank wallet imported successfully!');
+      messageApi.success('银行钱包导入成功！');
     } catch (error) {
-      messageApi.error('Invalid private key!');
+      messageApi.error('私钥无效！');
       console.error('Import failed:', error);
     }
   };
@@ -88,13 +88,13 @@ export const BankWalletModal: React.FC = () => {
     window.dispatchEvent(new Event('bankWalletChanged'));
     setForceUpdate(prev => prev + 1);
     window.dispatchEvent(new Event('storage'));
-    messageApi.success('Bank wallet revoked successfully!');
+    messageApi.success('银行钱包已撤销！');
     setIsModalOpen(false);
   };
 
   const handleCopy = (text: string, type: 'address' | 'privateKey') => {
     navigator.clipboard.writeText(text);
-    messageApi.success(`${type === 'address' ? 'Address' : 'Private key'} copied to clipboard!`);
+    messageApi.success(`${type === 'address' ? '地址' : '私钥'}已复制到剪贴板！`);
   };
 
   return (
@@ -105,11 +105,11 @@ export const BankWalletModal: React.FC = () => {
         onClick={() => setIsModalOpen(true)}
         type="primary"
       >
-        <span className="!hidden sm:!inline">Bank Account</span>
+        <span className="!hidden sm:!inline">银行账户</span>
       </Button>
 
       <Modal
-        title="Bank Account Management"
+        title="银行账户管理"
         open={isModalOpen}
         onCancel={() => {
           setIsModalOpen(false);
@@ -118,7 +118,7 @@ export const BankWalletModal: React.FC = () => {
         }}
         footer={[
           <Button key="close" onClick={() => setIsModalOpen(false)}>
-            Close
+            关闭
           </Button>,
           !wallet && !showImport && (
             <Button 
@@ -126,7 +126,7 @@ export const BankWalletModal: React.FC = () => {
               icon={<ImportOutlined />}
               onClick={() => setShowImport(true)}
             >
-              Import Account
+              导入账户
             </Button>
           ),
           !wallet && (
@@ -135,20 +135,20 @@ export const BankWalletModal: React.FC = () => {
               type="primary" 
               onClick={generateWallet}
             >
-              Generate New Account
+              生成新账户
             </Button>
           ),
           wallet && (
             <Popconfirm
               key="revoke"
-              title="Revoke Wallet"
-              description="Are you sure you want to revoke this wallet? This action cannot be undone."
+              title="撤销钱包"
+              description="确定要撤销此钱包吗？该操作不可恢复。"
               onConfirm={handleRevokeWallet}
-              okText="Yes"
-              cancelText="No"
+              okText="确定"
+              cancelText="取消"
             >
               <Button danger icon={<DeleteOutlined />}>
-                Revoke Account
+                撤销账户
               </Button>
             </Popconfirm>
           )
@@ -156,7 +156,7 @@ export const BankWalletModal: React.FC = () => {
       >
         {showImport ? (
           <Space direction="vertical" className="w-full">
-            <Text>Enter your private key:</Text>
+            <Text>请输入您的私钥：</Text>
             <Input.Password
               value={importPrivateKey}
               onChange={(e) => setImportPrivateKey(e.target.value)}
@@ -165,21 +165,21 @@ export const BankWalletModal: React.FC = () => {
             />
             <Space>
               <Button onClick={() => setShowImport(false)}>
-                Cancel
+                取消
               </Button>
               <Button 
                 type="primary" 
                 onClick={handleImportPrivateKey}
                 disabled={!importPrivateKey}
               >
-                Import
+                导入
               </Button>
             </Space>
           </Space>
         ) : wallet ? (
           <Space direction="vertical" className="w-full">
             <div>
-              <Text type="secondary">Address</Text>
+              <Text type="secondary">地址</Text>
               <div className="flex items-center gap-2 mt-1">
                 <Text strong className="font-mono">{wallet.address}</Text>
                 <Button 
@@ -193,7 +193,7 @@ export const BankWalletModal: React.FC = () => {
 
             <div>
               <div className="flex items-center justify-between">
-                <Text type="secondary">Private Key</Text>
+                <Text type="secondary">私钥</Text>
                 <Button
                   type="text"
                   icon={showPrivateKey ? <EyeInvisibleOutlined /> : <EyeOutlined />}
@@ -217,12 +217,12 @@ export const BankWalletModal: React.FC = () => {
             </div>
 
             <Text type="danger">
-              Warning: Never share your private key with anyone!
+              警告：切勿向任何人泄露您的私钥！
             </Text>
           </Space>
         ) : (
           <div className="text-center py-8">
-            <Text type="secondary">No wallet generated yet. Generate a new one or import existing.</Text>
+            <Text type="secondary">尚未生成钱包，请新建或导入已有钱包。</Text>
           </div>
         )}
       </Modal>

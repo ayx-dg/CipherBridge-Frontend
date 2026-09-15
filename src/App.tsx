@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ConfigProvider, theme } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { ClientPortal } from './pages/ClientPortal';
@@ -16,13 +17,15 @@ function App() {
     // <Web3Provider>
     //   <QueryClientProvider client={queryClient}>
       <ConfigProvider
+        locale={zhCN}
         theme={{
           algorithm: theme.defaultAlgorithm,
           token: {
-            colorPrimary: '#6750A4',
+            colorPrimary: '#5B3CC4',
             borderRadius: 10,
-            colorText: '#1C1B1F',
-            colorBorder: '#CAC4D0',
+            colorText: '#1A1740',
+            colorBorder: '#E4E0F5',
+            fontFamily: "'Inter', 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
           },
         }}
       >

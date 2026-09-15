@@ -33,9 +33,9 @@ const DATA_TYPES: Array<{
   label: string;
   task: string;
 }> = [
-  { value: 'monthly_income', label: 'Monthly Income', task: 'Credit Card Application' },
-  { value: 'credit_score', label: 'Credit Score', task: 'Credit Assessment' },
-  { value: 'property_value', label: 'Property Value', task: 'Mortgage Application' }
+  { value: 'monthly_income', label: '月收入', task: '信用卡申请' },
+  { value: 'credit_score', label: '信用评分', task: '信用评估' },
+  { value: 'property_value', label: '房产价值', task: '抵押贷款申请' }
 ] as const;
 
 export const DataEncryption: React.FC = () => {
@@ -104,15 +104,15 @@ export const DataEncryption: React.FC = () => {
     try {
       const userPublicKey = form.getFieldValue('userPublicKey');
       if (!userPublicKey) {
-        messageApi.warning('Please input user public key first!');
+        messageApi.warning('请先输入用户公钥！');
         return;
       }
 
       const fhePublicKey = await fheApi.getPublicKey(userPublicKey);
       form.setFieldsValue({ fhePublicKey });
-      messageApi.success('FHE public key retrieved successfully!');
+      messageApi.success('FHE 公钥获取成功！');
     } catch (error) {
-      messageApi.error('Failed to get FHE public key!');
+      messageApi.error('获取 FHE 公钥失败！');
       console.error('Failed to get FHE public key:', error);
     }
   };
@@ -121,7 +121,7 @@ export const DataEncryption: React.FC = () => {
   const handleEncrypt = async (values: any) => {
     try {
       if (!values.fhePublicKey) {
-        messageApi.warning('Please request FHE public key first!');
+        messageApi.warning('请先请求 FHE 公钥！');
         return;
       }
 
@@ -143,10 +143,10 @@ export const DataEncryption: React.FC = () => {
       };
 
       setEncryptedDataList(prev => [newEncryptedData, ...prev]);
-      messageApi.success('Data encrypted successfully!');
+      messageApi.success('数据加密成功！');
       form.resetFields();
     } catch (error) {
-      messageApi.error('Failed to encrypt data!');
+      messageApi.error('数据加密失败！');
       console.error('Failed to encrypt data:', error);
     }
   };
@@ -156,13 +156,13 @@ export const DataEncryption: React.FC = () => {
     try {
       const dataToUpload = encryptedDataList.find(item => item.id === dataId);
       if (!dataToUpload) {
-        messageApi.error('Data not found!');
+        messageApi.error('未找到数据！');
         return;
       }
 
       const storedKeys = localStorage.getItem('bank_wallet');
       if (!storedKeys) {
-        messageApi.error('Bank wallet not found!');
+        messageApi.error('未找到银行钱包！');
         return;
       }
 
@@ -216,9 +216,9 @@ export const DataEncryption: React.FC = () => {
             item.id === dataId ? { ...item, onChain: true, uploading: false } : item
           )
         );
-        messageApi.success('Data uploaded to blockchain successfully!');
+        messageApi.success('数据已成功上传至区块链！');
       } else {
-        throw new Error('Data storage event not found in transaction receipt');
+        throw new Error('交易回执中未找到数据存储事件');
       }
 
     } catch (error: any) {
@@ -226,13 +226,13 @@ export const DataEncryption: React.FC = () => {
       
       // 错误处理
       if (error.message.includes('Invalid expiry date')) {
-        messageApi.error('Invalid expiry date!');
+        messageApi.error('过期时间无效！');
       } else if (error.message.includes('Only bank can store data')) {
-        messageApi.error('Only registered banks can store data!');
+        messageApi.error('仅已注册银行可存储数据！');
       } else if (error.message.includes('Invalid user')) {
-        messageApi.error('User is not registered!');
+        messageApi.error('用户未注册！');
       } else {
-        messageApi.error('Failed to upload data to blockchain!');
+        messageApi.error('数据上传区块链失败！');
       }
 
       // 重置上传中状态
@@ -247,11 +247,11 @@ export const DataEncryption: React.FC = () => {
   // 添加删除单条记录的函数
   const handleDeleteRecord = (id: string) => {
     Modal.confirm({
-      title: 'Delete Record',
-      content: 'Are you sure you want to delete this record?',
-      okText: 'Yes',
+      title: '删除记录',
+      content: '确定要删除这条记录吗？',
+      okText: '确定',
       okType: 'danger',
-      cancelText: 'No',
+      cancelText: '取消',
       onOk() {
         setEncryptedDataList(prev => {
           const newList = prev.filter(item => item.id !== id);
@@ -263,7 +263,7 @@ export const DataEncryption: React.FC = () => {
           }
           return newList;
         });
-        messageApi.success('Record deleted');
+        messageApi.success('记录已删除');
       },
     });
   };
@@ -274,7 +274,7 @@ export const DataEncryption: React.FC = () => {
       {!localStorage.getItem('bankInfo') ? (
         <div className="text-center py-8">
           <Text type="secondary">
-            Please register your bank first to access encryption features.
+            请先注册银行，以使用数据加密功能。
           </Text>
         </div>
       ) : (
@@ -290,11 +290,11 @@ export const DataEncryption: React.FC = () => {
               <Col span={16}>
                 <Form.Item
                   name="userPublicKey"
-                  label={<Text strong>User Public Key</Text>}
-                  rules={[{ required: true, message: 'Please input user public key!' }]}
+                  label={<Text strong>用户公钥</Text>}
+                  rules={[{ required: true, message: '请输入用户公钥！' }]}
                 >
                   <Input
-                    placeholder="Enter user public key"
+                    placeholder="请输入用户公钥"
                     className="font-mono h-10"
                   />
                 </Form.Item>
@@ -302,17 +302,17 @@ export const DataEncryption: React.FC = () => {
               <Col span={8}>
                 <Form.Item
                   name="dataType"
-                  label={<Text strong>Data Type</Text>}
-                  rules={[{ required: true, message: 'Please select data type!' }]}
+                  label={<Text strong>数据类型</Text>}
+                  rules={[{ required: true, message: '请选择数据类型！' }]}
                 >
                   <Select
-                    placeholder="Select data type"
+                    placeholder="选择数据类型"
                     className="h-10"
                     options={DATA_TYPES.map(type => ({
                       value: type.value,
                       label: (
                         <div>
-                          <div>{type.label} For {type.task}</div>
+                          <div>{type.label} · {type.task}</div>
                           {/* <div className="text-xs text-gray-400"></div> */}
                         </div>
                       )
@@ -326,11 +326,11 @@ export const DataEncryption: React.FC = () => {
               <Col span={16}>
                 <Form.Item
                   name="fhePublicKey"
-                  label={<Text strong>FHE Public Key</Text>}
-                  rules={[{ required: true, message: 'Please request FHE public key!' }]}
+                  label={<Text strong>FHE 公钥</Text>}
+                  rules={[{ required: true, message: '请先请求 FHE 公钥！' }]}
                 >
                   <Input
-                    placeholder="FHE public key will appear here"
+                    placeholder="FHE 公钥将显示在此处"
                     readOnly
                     className="font-mono h-10 bg-gray-50"
                     suffix={
@@ -341,7 +341,7 @@ export const DataEncryption: React.FC = () => {
                         size="small"
                         className="ml-2"
                       >
-                        Request FHE Public Key
+                        请求 FHE 公钥
                       </Button>
                     }
                   />
@@ -350,11 +350,11 @@ export const DataEncryption: React.FC = () => {
               <Col span={8}>
                 <Form.Item
                   name="data"
-                  label={<Text strong>Raw Data</Text>}
-                  rules={[{ required: true, message: 'Please input data!' }]}
+                  label={<Text strong>原始数据</Text>}
+                  rules={[{ required: true, message: '请输入数据！' }]}
                 >
                   <Input 
-                    placeholder="Enter data to encrypt" 
+                    placeholder="请输入要加密的数据" 
                     className="h-10"
                   />
                 </Form.Item>
@@ -370,7 +370,7 @@ export const DataEncryption: React.FC = () => {
                 className="h-10"
                 block
               >
-                Encrypt Data
+                加密数据
               </Button>
             </Form.Item>
           </Form>
@@ -382,7 +382,7 @@ export const DataEncryption: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <LockOutlined className="text-gray-400" />
                   <Text strong className="text-lg">
-                    Encryption History {" "}
+                    加密历史 {" "}
                   </Text>
                   <Badge 
                       count={encryptedDataList.length} 
@@ -405,7 +405,7 @@ export const DataEncryption: React.FC = () => {
                             text={
                               <span className="flex items-center gap-10 px-2">
                                 <CheckCircleOutlined className="text-green-500" />
-                                <Text type="success" className="font-medium"> On Chain</Text>
+                                <Text type="success" className="font-medium"> 已上链</Text>
                               </span>
                             }
                           />
@@ -418,7 +418,7 @@ export const DataEncryption: React.FC = () => {
                             size="small"
                             className="flex items-center gap-1.5"
                           >
-                            <span>Upload to Chain</span>
+                            <span>上传至链上</span>
                           </Button>
                         )}
                         <Button
@@ -445,20 +445,20 @@ export const DataEncryption: React.FC = () => {
                       
                       <div className="bg-gray-50 p-3 rounded-lg">
                         <div className="flex justify-between items-center mb-2">
-                          <Text type="secondary" className="text-sm">Encrypted Value:</Text>
+                          <Text type="secondary" className="text-sm">加密值：</Text>
                           <Button 
                             type="link" 
                             size="small"
                             onClick={() => toggleExpand(item.id)}
                           >
-                            {expandedItems[item.id] ? 'Show Less' : 'Show More'}
+                            {expandedItems[item.id] ? '收起' : '展开'}
                           </Button>
                         </div>
-                        <Tooltip title="Click to copy" placement="top">
+                        <Tooltip title="点击复制" placement="top">
                           <Paragraph 
                             copyable={{ 
                               text: item.encryptedValue,
-                              tooltips: ['Copy', 'Copied!'],
+                              tooltips: ['复制', '已复制！'],
                             }} 
                             className="mb-0 font-mono text-sm leading-relaxed break-all"
                           >
@@ -472,13 +472,13 @@ export const DataEncryption: React.FC = () => {
 
                       <div className="grid grid-cols-2 gap-4 text-xs">
                         <div>
-                          <Text type="secondary" className="block mb-1">User Public Key</Text>
+                          <Text type="secondary" className="block mb-1">用户公钥</Text>
                           <div className="font-mono bg-gray-50 p-2 rounded truncate">
                             {item.userPublicKey.substring(0, 20)}...
                           </div>
                         </div>
                         <div>
-                          <Text type="secondary" className="block mb-1">FHE Public Key</Text>
+                          <Text type="secondary" className="block mb-1">FHE 公钥</Text>
                           <div className="font-mono bg-gray-50 p-2 rounded truncate">
                             {item.fhePublicKey.substring(0, 20)}...
                           </div>

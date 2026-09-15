@@ -13,15 +13,15 @@ export const BankPortal: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-6">
         <Link to="/">
-          <Button type="text" icon={<ArrowLeftOutlined />} className="px-0 text-[#6750A4] hover:text-[#21005D]">
-            Back to Home
+          <Button type="text" icon={<ArrowLeftOutlined />} className="px-0 text-[#5B3CC4] hover:text-[#1E1650]">
+            返回首页
           </Button>
         </Link>
       </div>
 
       <div className="text-center mb-12">
-        <Title level={2} className="mb-4">CipherBridge Bank Portal</Title>
-        <p className="text-gray-600 text-lg">Manage privacy computing tasks and encrypted data processing</p>
+        <Title level={2} className="mb-4">融鉴 FinLens · 银行端</Title>
+        <p className="text-gray-600 text-lg">管理隐私计算任务与加密数据处理</p>
       </div>
 
       <div className="flex-1 min-w-0 w-full space-y-6">
@@ -40,7 +40,7 @@ export const BankPortal: React.FC = () => {
                   label: (
                     <span className="flex items-center gap-2">
                       <DatabaseOutlined />
-                      Business Tasks
+                      业务任务
                     </span>
                   ),
                   children: (
@@ -54,7 +54,7 @@ export const BankPortal: React.FC = () => {
                   label: (
                     <span className="flex items-center gap-2">
                       <LockOutlined />
-                      Data Encryption
+                      数据加密
                     </span>
                   ),
                   children: (

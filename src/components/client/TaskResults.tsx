@@ -39,13 +39,13 @@ interface TaskResult {
 //   {
 //     id: '1',
 //     bankId: 'bank1',
-//     businessType: 'Loan Application',
+//     businessType: '贷款申请',
 //     status: 'pending'
 //   },
 //   {
 //     id: '2',
 //     bankId: 'bank2',
-//     businessType: 'Credit Assessment',
+//     businessType: '信用评估',
 //     status: 'pending'
 //   }
 // ];
@@ -101,7 +101,7 @@ export const TaskResults: React.FC = () => {
     try {
       const storedWallet = localStorage.getItem('client_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your account first!');
+        messageApi.error('请先连接您的账户！');
         return;
       }
 
@@ -123,9 +123,9 @@ export const TaskResults: React.FC = () => {
     } catch (error: any) {
       console.error('Failed to decrypt result:', error);
       if (error.response?.data?.message) {
-        messageApi.error('Failed to decrypt: ' + error.response.data.message);
+        messageApi.error('解密失败：' + error.response.data.message);
       } else {
-        messageApi.error('Failed to decrypt: ' + error.message);
+        messageApi.error('解密失败：' + error.message);
       }
     }
   };
@@ -152,9 +152,9 @@ export const TaskResults: React.FC = () => {
         taskId: currentTask.id,
         encryptedResult: currentTask.encryptedResult || ''
       });
-      messageApi.success('Encrypted result retrieved successfully!');
+      messageApi.success('加密结果获取成功！');
     } catch (error) {
-      messageApi.error('Failed to retrieve result!');
+      messageApi.error('结果获取失败！');
       console.error('Result retrieval failed:', error);
     }
   };
@@ -165,7 +165,7 @@ export const TaskResults: React.FC = () => {
       setDecrypting(true);
       const storedWallet = localStorage.getItem('client_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your client account first!');
+        messageApi.error('请先连接您的客户端账户！');
         return;
       }
 
@@ -195,9 +195,9 @@ export const TaskResults: React.FC = () => {
         signature
       }));
       setIsDecrypted(true);
-      messageApi.success('Result decrypted and signed successfully!');
+      messageApi.success('结果解密并签名成功！');
     } catch (error) {
-      messageApi.error('Failed to decrypt and sign result!');
+      messageApi.error('结果解密与签名失败！');
       console.error('Decryption failed:', error);
     } finally {
       setDecrypting(false);
@@ -209,7 +209,7 @@ export const TaskResults: React.FC = () => {
       setPublishing(true);
       const storedWallet = localStorage.getItem('client_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your client account first!');
+        messageApi.error('请先连接您的客户端账户！');
         return;
       }
 
@@ -229,14 +229,14 @@ export const TaskResults: React.FC = () => {
       );
 
       await tx.wait();
-      messageApi.success('Result published and task completed!');
+      messageApi.success('结果已发布，任务完成！');
       setIsModalVisible(false);
       setCurrentTask(null);
       setTaskResult(null);
       setIsDecrypted(false);
       refreshTasks();
     } catch (error) {
-      messageApi.error('Failed to publish result!');
+      messageApi.error('结果发布失败！');
       console.error('Publishing failed:', error);
     } finally {
       setPublishing(false);
@@ -247,7 +247,7 @@ export const TaskResults: React.FC = () => {
     try {
       const storedWallet = localStorage.getItem('client_wallet');
       if (!storedWallet) {
-        messageApi.error('Please connect your account first!');
+        messageApi.error('请先连接您的账户！');
         return;
       }
 
@@ -277,7 +277,7 @@ export const TaskResults: React.FC = () => {
 
       if (taskCreatedEvent) {
         const taskId = taskCreatedEvent.args.taskId.toString();
-        messageApi.success(`Business task created successfully! Task ID: ${taskId}`);
+        messageApi.success(`业务任务创建成功！任务 ID：${taskId}`);
         
         // Close modal and reset form
         setIsNewTaskModalVisible(false);
@@ -286,18 +286,18 @@ export const TaskResults: React.FC = () => {
         // Refresh tasks after successful creation
         await refreshTasks();
       } else {
-        throw new Error('Task creation event not found in transaction receipt');
+        throw new Error('交易回执中未找到任务创建事件');
       }
 
     } catch (error: any) {
       console.error('Failed to create task:', error);
       
       if (error.message.includes('User not registered')) {
-        messageApi.error('You must be a registered user to create tasks!');
+        messageApi.error('您必须是已注册用户才能创建任务！');
       } else if (error.message.includes('Invalid bank address')) {
-        messageApi.error('The provided bank address is not valid!');
+        messageApi.error('提供的银行地址无效！');
       } else {
-        messageApi.error('Failed to create business task: ' + error.message);
+        messageApi.error('创建业务任务失败：' + error.message);
       }
     }
   };
@@ -329,7 +329,7 @@ export const TaskResults: React.FC = () => {
         bankId: task.bankAddress,
         businessType: task.taskType,
         status: task.isCompleted 
-          ? (task.isPublished ? 'published' : 'completed') 
+          ? (task.is已发布 ? 'published' : 'completed') 
           : 'pending',
         createdAt: parseInt(task.createdAt._hex, 16),
         encryptedResult: task.encryptedResult || '',
@@ -342,29 +342,29 @@ export const TaskResults: React.FC = () => {
       setPublishedTasks(formatTasks(published));
     } catch (error) {
       console.error('Failed to fetch tasks:', error);
-      messageApi.error('Failed to load tasks');
+      messageApi.error('任务加载失败');
     }
   };
 
   const columns = [
     {
-      title: 'Task ID',
+      title: '任务 ID',
       dataIndex: 'id',
       key: 'id',
     },
     {
-      title: 'Bank ID',
+      title: '银行 ID',
       dataIndex: 'bankId',
       key: 'bankId',
     },
     {
-      title: 'Business Type',
+      title: '业务类型',
       dataIndex: 'businessType',
       key: 'businessType',
       render: (text: string) => <Tag color="blue">{text.toUpperCase()}</Tag>,
     },
     {
-      title: 'Status',
+      title: '状态',
       dataIndex: 'status',
       key: 'status',
       render: (status: string) => (
@@ -377,7 +377,7 @@ export const TaskResults: React.FC = () => {
       ),
     },
     {
-      title: 'Actions',
+      title: '操作',
       key: 'actions',
       render: (_, record: Task) => (
         <Space>
@@ -386,7 +386,7 @@ export const TaskResults: React.FC = () => {
               type="default"
               icon={<SyncOutlined spin />}
             >
-              Waiting for Bank
+              等待银行处理
             </Button>
           )}
           {record.status === 'completed' && (
@@ -395,7 +395,7 @@ export const TaskResults: React.FC = () => {
               icon={<PlayCircleOutlined />}
               onClick={() => handleProcessTask(record)}
             >
-              Process Result
+              处理结果
             </Button>
           )}
           {record.status === 'published' && (
@@ -404,7 +404,7 @@ export const TaskResults: React.FC = () => {
               icon={<CheckCircleOutlined />}
               onClick={() => handleProcessTask(record)}
             >
-              View Result
+              查看结果
             </Button>
           )}
         </Space>
@@ -423,7 +423,7 @@ export const TaskResults: React.FC = () => {
       
       // 添加标题
       doc.setFontSize(20);
-      doc.text('Business Qualification Certificate', pageWidth/2, 20, { align: 'center' });
+      doc.text('企业资质证明', pageWidth/2, 20, { align: 'center' });
       
       // 添加分隔线
       doc.setLineWidth(0.5);
@@ -434,11 +434,11 @@ export const TaskResults: React.FC = () => {
       
       // 准备内容（除签名外）
       const basicContent = [
-        `Certificate ID: ${currentTask.id}`,
-        `Bank Address: ${currentTask.bankId}`,
-        `Business Type: ${currentTask.businessType}`,
-        `Qualification Result: ${currentTask.decryptedResult}`,
-        `Issue Date: ${new Date().toLocaleDateString()}`
+        `证明编号：${currentTask.id}`,
+        `银行地址：${currentTask.bankId}`,
+        `业务类型：${currentTask.businessType}`,
+        `资质结果：${currentTask.decryptedResult}`,
+        `签发日期：${new Date().toLocaleDateString()}`
       ];
 
       // 先添加基本内容
@@ -450,7 +450,7 @@ export const TaskResults: React.FC = () => {
 
       // 处理签名的自动换行
       if (currentTask.signature) {
-        doc.text('Verification Signature:', margin, yPosition);
+        doc.text('验证签名：', margin, yPosition);
         yPosition += 7; // 稍微缩小签名行间距
 
         // 将签名分成多行
@@ -469,7 +469,7 @@ export const TaskResults: React.FC = () => {
       // 添加页脚
       doc.setFontSize(10);
       doc.text(
-        'This certificate is digitally signed and verified on blockchain.',
+        '本证明已在区块链上进行数字签名与验证。',
         pageWidth/2,
         250,
         { align: 'center' }
@@ -477,10 +477,10 @@ export const TaskResults: React.FC = () => {
       
       // 保存PDF
       doc.save(`business-certificate-${currentTask.id}.pdf`);
-      messageApi.success('Certificate generated successfully!');
+      messageApi.success('证明生成成功！');
     } catch (error) {
       console.error('Failed to generate certificate:', error);
-      messageApi.error('Failed to generate certificate');
+      messageApi.error('证明生成失败');
     }
   };
 
@@ -489,14 +489,14 @@ export const TaskResults: React.FC = () => {
       {contextHolder}
       <Card 
         className="shadow-md hover:shadow-lg transition-shadow duration-300"
-        title="Task Management"
+        title="任务管理"
         extra={
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setIsNewTaskModalVisible(true)}
           >
-            <span className="!hidden sm:!inline">New Business Task</span>
+            <span className="!hidden sm:!inline">新建业务任务</span>
           </Button>
         }
       >
@@ -510,19 +510,19 @@ export const TaskResults: React.FC = () => {
             >
               <Radio.Button value="pending">
                 <div className="px-2 py-1">
-                  <span>Pending Tasks {" "}</span>
+                  <span>待处理任务 {" "}</span>
                   <Badge count={pendingTasks.length} className="ml-2" />
                 </div>
               </Radio.Button>
               <Radio.Button value="completed">
                 <div className="px-2 py-1">
-                  <span>Completed Unpublished {" "}</span>
+                  <span>已完成未发布 {" "}</span>
                   <Badge count={completedTasks.length} className="ml-2" />
                 </div>
               </Radio.Button>
               <Radio.Button value="published">
               <div className="px-2 py-1">
-                <span>Published {" "}</span>
+                <span>已发布 {" "}</span>
                 <Badge
                   count={publishedTasks.length} 
                   className="ml-2"
@@ -555,7 +555,7 @@ export const TaskResults: React.FC = () => {
         title={
           <div className="flex items-center space-x-2">
             <PlayCircleOutlined className="text-blue-500" />
-            <span> Process Task: {currentTask?.id}</span>
+            <span> 处理任务：{currentTask?.id}</span>
           </div>
         }
         open={isModalVisible}
@@ -578,12 +578,12 @@ export const TaskResults: React.FC = () => {
               size="large"
               className="rounded-lg h-12"
             >
-              Request Encrypted Result
+              请求加密结果
             </Button>
           ) : (
             <div className="space-y-4">
               <div className="mb-4">
-                <Text strong className="text-lg mb-2 block">Encrypted Result:</Text>
+                <Text strong className="text-lg mb-2 block">加密结果：</Text>
                 <div className="bg-white p-3 rounded border border-gray-200">
                   <div className="font-mono break-all">
                     {expandedResult 
@@ -597,7 +597,7 @@ export const TaskResults: React.FC = () => {
                     size="small"
                     className="mt-1 p-0"
                   >
-                    {expandedResult ? 'Show Less' : 'Show More'}
+                    {expandedResult ? '收起' : '展开'}
                   </Button>
                   <Button
                     type="link"
@@ -605,10 +605,10 @@ export const TaskResults: React.FC = () => {
                     className="mt-1 p-0 ml-4"
                     onClick={() => {
                       navigator.clipboard.writeText(taskResult.encryptedResult);
-                      messageApi.success('Copied to clipboard!');
+                      messageApi.success('已复制到剪贴板！');
                     }}
                   >
-                    Copy
+                    复制
                   </Button>
                 </div>
               </div>
@@ -616,14 +616,14 @@ export const TaskResults: React.FC = () => {
               {isDecrypted && taskResult.decryptedResult && (
                 <div className="space-y-4">
                   <div>
-                    <Text strong className="text-lg mb-2 block">Decrypted Result:</Text>
+                    <Text strong className="text-lg mb-2 block">解密结果：</Text>
                     <Paragraph copyable className="mb-0 bg-white p-3 rounded border border-gray-200">
                       {taskResult.decryptedResult}
                     </Paragraph>
                   </div>
 
                   <div>
-                    <Text strong className="text-lg mb-2 block">Signature:</Text>
+                    <Text strong className="text-lg mb-2 block">签名：</Text>
                     <div className="bg-white p-3 rounded border border-gray-200">
                       <div className="font-mono break-all">
                         {taskResult.signature}
@@ -635,11 +635,11 @@ export const TaskResults: React.FC = () => {
                         onClick={() => {
                           if (taskResult.signature) {
                             navigator.clipboard.writeText(taskResult.signature);
-                            messageApi.success('Signature copied to clipboard!');
+                            messageApi.success('签名已复制到剪贴板！');
                           }
                         }}
                       >
-                        Copy
+                        复制
                       </Button>
                     </div>
                   </div>
@@ -655,7 +655,7 @@ export const TaskResults: React.FC = () => {
                     size="large"
                     className="rounded-lg"
                   >
-                    Decrypt and Sign Result
+                    解密并签名结果
                   </Button>
                 ) : (
                   <Button
@@ -665,7 +665,7 @@ export const TaskResults: React.FC = () => {
                     size="large"
                     className="rounded-lg"
                   >
-                    Publish Result and Finish Task
+                    发布结果并完成任务
                   </Button>
                 )}
               </div>
@@ -678,7 +678,7 @@ export const TaskResults: React.FC = () => {
         title={
           <div className="flex items-center space-x-2">
             <PlusOutlined className="text-blue-500" />
-            <span>New Business Task</span>
+            <span>新建业务任务</span>
           </div>
         }
         open={isNewTaskModalVisible}
@@ -694,28 +694,28 @@ export const TaskResults: React.FC = () => {
         >
           <Form.Item
             name="bankAddress"
-            label={<Text strong>Bank Address</Text>}
-            rules={[{ required: true, message: 'Please input bank address!' }]}
+            label={<Text strong>银行地址</Text>}
+            rules={[{ required: true, message: '请输入银行地址！' }]}
           >
             <Input 
               prefix={<BankOutlined className="text-gray-400" />} 
-              placeholder="Enter Bank Address"
+              placeholder="请输入银行地址"
               className="rounded-lg"
             />
           </Form.Item>
 
           <Form.Item
             name="businessType"
-            label={<Text strong>Business Type</Text>}
-            rules={[{ required: true, message: 'Please select business type!' }]}
+            label={<Text strong>业务类型</Text>}
+            rules={[{ required: true, message: '请选择业务类型！' }]}
           >
             <Select 
-              placeholder="Select business type"
+              placeholder="选择业务类型"
               className="rounded-lg"
             >
-              <Option value="loan">Loan Application</Option>
-              <Option value="credit">Credit Assessment</Option>
-              <Option value="mortgage">Mortgage Application</Option>
+              <Option value="loan">贷款申请</Option>
+              <Option value="credit">信用评估</Option>
+              <Option value="mortgage">抵押贷款申请</Option>
             </Select>
           </Form.Item>
 
@@ -726,7 +726,7 @@ export const TaskResults: React.FC = () => {
               className="rounded-lg"
               onClick={() => setIsNewTaskModalVisible(false)}
             >
-              Create Business Task
+              创建业务任务
             </Button>
           </div>
         </Form>
@@ -736,7 +736,7 @@ export const TaskResults: React.FC = () => {
         title={
           <div className="flex items-center space-x-2">
             <CheckCircleOutlined className="text-green-500" />
-            <span> View Published Task: {currentTask?.id}</span>
+            <span> 查看已发布任务：{currentTask?.id}</span>
           </div>
         }
         open={isViewModalVisible}
@@ -752,7 +752,7 @@ export const TaskResults: React.FC = () => {
               onClick={generateCertificate}
               className="rounded-lg"
             >
-              Generate Certificate
+              生成证明
             </Button>
           </div>
         }
@@ -763,34 +763,34 @@ export const TaskResults: React.FC = () => {
           <Card size="small" className="shadow-sm">
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Text strong>Task Details {" "}</Text>
-                <Tag color="success">Published</Tag>
+                <Text strong>任务详情 {" "}</Text>
+                <Tag color="success">已发布</Tag>
               </div>
               
               <div className="grid grid-cols-1 gap-4 mt-4">
                 <div>
-                  <Text type="secondary">Bank Address:</Text>
+                  <Text type="secondary">银行地址:</Text>
                   <div className="font-mono bg-gray-50 p-2 rounded text-sm mt-1">
                     {currentTask?.bankId}
                   </div>
                 </div>
 
                 <div>
-                  <Text type="secondary">Business Type:</Text>
+                  <Text type="secondary">业务类型：</Text>
                   <div className="text-sm mt-1">
                     {currentTask?.businessType}
                   </div>
                 </div>
 
                 <div>
-                  <Text type="secondary">Decrypted Result:</Text>
+                  <Text type="secondary">解密结果：</Text>
                   <div className="bg-white p-3 rounded border border-gray-200">
-                    {currentTask?.decryptedResult || 'Decrypting...'}
+                    {currentTask?.decryptedResult || '解密中...'}
                   </div>
                 </div>
 
                 <div>
-                  <Text type="secondary">Signature:</Text>
+                  <Text type="secondary">签名：</Text>
                   <div className="font-mono bg-gray-50 p-2 rounded text-sm mt-1">
                     <div className="break-all">
                       {currentTask?.signature}
@@ -802,17 +802,17 @@ export const TaskResults: React.FC = () => {
                       onClick={() => {
                         if (currentTask?.signature) {
                           navigator.clipboard.writeText(currentTask.signature);
-                          messageApi.success('Signature copied to clipboard!');
+                          messageApi.success('签名已复制到剪贴板！');
                         }
                       }}
                     >
-                      Copy
+                      复制
                     </Button>
                   </div>
                 </div>
 
                 <div>
-                  <Text type="secondary">Created At:</Text>
+                  <Text type="secondary">创建时间：</Text>
                   <div className="text-sm mt-1">
                     {new Date(currentTask?.createdAt || 0).toLocaleString()}
                   </div>

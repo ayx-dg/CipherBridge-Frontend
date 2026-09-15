@@ -441,3 +441,81 @@ export default {
 - `src/pages/ClientPortal.tsx` / `src/pages/BankPortal.tsx`：移除 `SiteNav`，新增「Back to Home」按钮（`ArrowLeftOutlined` + `Link to="/"`），内容改全宽。
 
 **验证：** `npx vite build` 通过；`scripts/mobileCheck.cjs` 在 320/360/375/393/414/1280 全部无溢出；Playwright 视觉确认桌面顶栏链接/活动下划线正常、移动端汉堡下拉面板可展开、子页返回按钮与全宽内容布局正常。
+
+---
+
+## 16. 品牌重塑：融鉴 FinLens + 品牌紫罗兰色板 + 首页改版 + 全站中文化
+
+**来源：** 品牌设计稿 `~/Downloads/mmexport1789442607306.jpg`（方案 03「聚焦棱镜」）。
+**目标：** 依据设计稿更新 Logo / 品牌名（中文「融鉴」/ 英文 `FinLens`），首页按设计稿重做，并将全站界面语言切换为中文。
+**改动文件：** `index.html`、`public/logo.svg`（新增）、`src/index.css`、`src/App.tsx`、`src/components/Layout.tsx`、`src/pages/Home.tsx`、`src/pages/ClientPortal.tsx`、`src/pages/BankPortal.tsx`、`src/components/**`（全部业务组件文案）。
+**构建验证：** `npx vite build` 通过（3606 modules）。
+
+### 16.1 品牌名与标识
+
+| 项 | 旧 | 新 |
+|---|---|---|
+| 英文名 | `CipherBridge` | `FinLens` |
+| 中文名 | （无） | `融鉴` |
+| Slogan | （无） | `看清风险，不看隐私。` |
+| 页签标题 | `CipherBridge` | `融鉴 FinLens · 看清风险，不看隐私` |
+| 图标 | `/logo.png`（资源缺失，破图） | `/logo.svg`（新增矢量标识） |
+| `lang` | `en` | `zh-CN` |
+
+**Logo 构成（`public/logo.svg`，矢量稿来自 `icon_vector.svg`）：** `viewBox 0 0 173 148`。上下两条紫色渐变缎带（上 `#3020A6 → #6550DD → #A18CEB`，下 `#3524AA → #6852DE → #A08BEA`）构成**开口朝右的「C」形透镜**（右侧为平切端口，左侧收成尖），C 的开口处嵌入渐变菱形棱镜（`#6547D9 → #625EE4 → #35D5DE`，由紫转青）。顶栏采用「图标 + 融鉴/FinLens 文字锁定」组合。
+
+> 注：设计稿中「设计思路 / DESIGN CONCEPT」下的三个小框（镜头·观察 / 棱镜·提炼 / 融汇成「鉴」）是 **Logo 设计概念说明**，不是网站首页的组成部分，故未放入首页。
+
+### 16.2 品牌色板（`:root` 变量）
+
+| Token | 旧值（M3 紫） | 新值（品牌） | 说明 |
+|---|---|---|---|
+| `--primary-color` | `#6750A4` | `#5B3CC4` | 品牌主紫（取自 Logo 深紫） |
+| `--primary-light` | `#EADDFF` | `#EDE8FC` | 浅紫容器色 |
+| `--primary-dark` | `#21005D` | `#1E1650` | 深紫 / 藏青（Logo 文字色） |
+| `--accent-color` | — | `#45D6EE` | 棱镜青（新增） |
+| `--bg-color` | `#FFFBFE` | `#F7F6FC` | 浅紫白背景 |
+| `--text-primary` | `#1C1B1F` | `#1A1740` | 主文字（藏青） |
+| `--text-secondary` | `#49454F` | `#514D6B` | 次文字 |
+| `--border-color` | `#CAC4D0` | `#E4E0F5` | 浅紫边框 |
+| `--m3-primary-rgb` | `103,80,164` | `91,60,196` | 透明光晕基色 |
+| `--primary-hover` | — | `#6E4FE0` | 主按钮 hover（新增，避免白字不可见） |
+| `--primary-soft` | — | `#C9BCF0` | 输入框 hover 边框（新增） |
+| `--brand-gradient` | — | `linear-gradient(135deg,#7A5AF8,#4B2FB8)` | 主按钮 / 标题渐变 |
+| `--brand-gradient-accent` | — | `linear-gradient(135deg,#5568E8,#45D6EE)` | 棱镜青渐变 |
+
+- antd `colorPrimary` `#6750A4 → #5B3CC4`、`colorText → #1A1740`、`colorBorder → #E4E0F5`。
+- 主按钮背景由纯色改为 `--brand-gradient`；表格表头底色 `#E7E0EC → --primary-light`。
+- 中文字体栈：`'Inter','PingFang SC','Microsoft YaHei',-apple-system,…`。
+
+### 16.3 首页改版（`src/pages/Home.tsx`）
+
+按设计稿重构为营销首页：
+
+| 区块 | 内容 |
+|---|---|
+| Hero（左） | 大标题「看清风险，/ 不看隐私。」（后半句品牌紫渐变）、副标题「用隐私计算技术，为中小企业构建更公平、更安全的融资环境。」、`开始体验 →`（→ `/client`）与 `银行端入口`（→ `/bank`）两个按钮 |
+| Hero（右） | 毛玻璃棱镜面板（`backdrop-blur-xl` + 浅紫光晕阴影），右侧对齐文案「数据有界 / 信任无界 / 让更多可能发生」+ `MORE POSSIBILITIES FOR SMES`，左下叠加淡色 Logo 水印 |
+| 入口卡片 | 客户端 / 银行端两张卡片（原 Portal 入口保留，品牌化配色） |
+| 页脚 | Logo + `融鉴 FinLens` + `PRIVACY-PRESERVING RISK CONTROL FOR SMES` |
+
+背景加入两枚品牌色径向光斑（`#7A5AF8`/`#45D6EE` 低透明度模糊）。
+
+### 16.4 全站中文化
+
+- 顶栏导航：`首页 / 客户端 / 银行端` + `申请试用`（圆角主按钮 → `/client`）。
+- 所有页面与业务组件（客户端注册、任务管理、新建业务任务、银行注册、业务任务、数据加密、客户端/银行账户弹窗）的标题、按钮、表单标签、占位符、状态、提示消息、PDF 证明文案全部译为中文。
+- 子页返回按钮 `Back to Home → 返回首页`。
+- 接入 antd 中文语言包：`ConfigProvider locale={zhCN}`（`antd/locale/zh_CN`），空表格显示「暂无数据」等。
+- 保留英文的位置：合约 revert 字符串匹配（`error.message.includes('Invalid user')` 等，必须与 Solidity 一致）、`console.*` 调试日志、代码标识符。
+
+### 16.5 验证
+
+| 检查项 | 结果 |
+|---|---|
+| `npx vite build` | ✅ 通过 |
+| 控制台错误 | ✅ 0 error |
+| `scripts/mobileCheck.cjs`（320/375/390/414/768） | ✅ 首页 / 客户端 / 银行端均无水平溢出 |
+| Playwright 视觉确认 | ✅ 首页 Hero/设计思路/入口卡、顶栏中文化、钱包弹窗、银行/客户端页、移动端布局 |
+
+> 说明：本仓库 `tsconfig.json` 仍缺失，`npm run build` 的 `tsc` 步骤会失败，故构建统一使用 `npx vite build`。

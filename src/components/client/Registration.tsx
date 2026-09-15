@@ -90,7 +90,7 @@ export const Registration: React.FC = () => {
 
   const handleGenerateKeys = async () => {
     if (!wallet) {
-      messageApi.warning('Please create a client account first!');
+      messageApi.warning('请先创建客户端账户！');
       window.dispatchEvent(new Event('openClientWalletModal'));
       return;
     }
@@ -104,9 +104,9 @@ export const Registration: React.FC = () => {
       
       localStorage.setItem('fheKeys', JSON.stringify(newKeys));
       setKeys(newKeys);
-      messageApi.success('FHE Keys generated successfully!');
+      messageApi.success('FHE 密钥生成成功！');
     } catch (error) {
-      messageApi.error('Key generation failed!');
+      messageApi.error('密钥生成失败！');
       console.error('Key generation failed:', error);
     }
   };
@@ -114,7 +114,7 @@ export const Registration: React.FC = () => {
   const handleRegister = async () => {
     const storedWallet = localStorage.getItem('client_wallet');
     if (!storedWallet || !keys) {
-      messageApi.error('Please generate keys and create client account first!');
+      messageApi.error('请先生成密钥并创建客户端账户！');
       return;
     }
 
@@ -148,9 +148,9 @@ export const Registration: React.FC = () => {
 
       localStorage.setItem('isRegistered', 'true');
       setIsContractRegistered(true);
-      messageApi.success('Registration successful!');
+      messageApi.success('注册成功！');
     } catch (error) {
-      messageApi.error('Registration failed!');
+      messageApi.error('注册失败！');
       console.error('Registration failed:', error);
     }
   };
@@ -177,7 +177,7 @@ export const Registration: React.FC = () => {
     window.dispatchEvent(new Event('clientWalletChanged'));
     window.dispatchEvent(new Event('storage'));
     
-    messageApi.success('Keys and registration revoked successfully!');
+    messageApi.success('密钥与注册信息已成功撤销！');
   };
 
   const checkContractRegistration = async () => {
@@ -200,7 +200,7 @@ export const Registration: React.FC = () => {
   };
 
   return (
-    <Card title="Client Registration">
+    <Card title="客户端注册">
       {contextHolder}
       <Row gutter={24}>
         <Col xs={24} md={12}>
@@ -213,12 +213,12 @@ export const Registration: React.FC = () => {
               disabled={keys !== null}
               block
             >
-              Generate FHE Keys
+              生成 FHE 密钥
             </Button>
 
             {!wallet && (
               <span className="text-xs text-gray-500">
-                No client account found. Click the button above to create one.
+                未找到客户端账户，请点击上方按钮创建。
               </span>
             )}
 
@@ -230,7 +230,7 @@ export const Registration: React.FC = () => {
               disabled={!keys || isContractRegistered}
               block
             >
-              Register Client
+              注册客户端
             </Button>
 
             {(keys || isRegistered) && (
@@ -241,7 +241,7 @@ export const Registration: React.FC = () => {
                 size="large"
                 block
               >
-                Revoke Keys and Registration
+                撤销密钥与注册
               </Button>
             )}
           </Space>
@@ -253,13 +253,13 @@ export const Registration: React.FC = () => {
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="mb-4">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold">Public Key:</span>
+                    <span className="font-semibold">公钥：</span>
                     <Button
                       type="text"
                       size="small"
                       onClick={() => setShowFullPublicKey(!showFullPublicKey)}
                     >
-                      {showFullPublicKey ? 'Show Less' : 'Show More'}
+                      {showFullPublicKey ? '收起' : '展开'}
                     </Button>
                   </div>
                   <Paragraph copyable className="mb-0 mt-1 font-mono">
@@ -269,7 +269,7 @@ export const Registration: React.FC = () => {
                 
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold">Private Key:</span>
+                    <span className="font-semibold">私钥：</span>
                     <Space>
                       <Button
                         type="text"
@@ -283,7 +283,7 @@ export const Registration: React.FC = () => {
                           size="small"
                           onClick={() => setShowFullPrivateKey(!showFullPrivateKey)}
                         >
-                          {showFullPrivateKey ? 'Show Less' : 'Show More'}
+                          {showFullPrivateKey ? '收起' : '展开'}
                         </Button>
                       )}
                     </Space>
@@ -299,7 +299,7 @@ export const Registration: React.FC = () => {
                 </div>
               </div>
               <div className="text-red-500 text-sm">
-                Warning: Never share your private key with anyone!
+                警告：切勿向任何人泄露您的私钥！
               </div>
             </Space>
           </Col>

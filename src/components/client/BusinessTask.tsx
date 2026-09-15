@@ -17,10 +17,10 @@ export const BusinessTask: React.FC = () => {
   const handleSubmit = async (values: BusinessTaskRequest) => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      messageApi.success('Business task created successfully!');
+      messageApi.success('业务任务创建成功！');
       form.resetFields();
     } catch (error) {
-      messageApi.error('Failed to create business task!');
+      messageApi.error('创建业务任务失败！');
       console.error('Task creation failed:', error);
     }
   };
@@ -31,7 +31,7 @@ export const BusinessTask: React.FC = () => {
       title={
         <div className="flex items-center space-x-2">
           <FileAddOutlined className="text-blue-500" />
-          <Title level={4} className="m-0">New Business Task</Title>
+          <Title level={4} className="m-0">新建业务任务</Title>
         </div>
       }
     >
@@ -44,28 +44,28 @@ export const BusinessTask: React.FC = () => {
       >
         <Form.Item
           name="bankWeId"
-          label={<Text strong>Bank WeID</Text>}
-          rules={[{ required: true, message: 'Please input bank WeID!' }]}
+          label={<Text strong>银行 WeID</Text>}
+          rules={[{ required: true, message: '请输入银行 WeID！' }]}
         >
           <Input 
             prefix={<BankOutlined className="text-gray-400" />} 
-            placeholder="Enter bank WeID"
+            placeholder="请输入银行 WeID"
             className="rounded-lg"
           />
         </Form.Item>
 
         <Form.Item
           name="businessType"
-          label={<Text strong>Business Type</Text>}
-          rules={[{ required: true, message: 'Please select business type!' }]}
+          label={<Text strong>业务类型</Text>}
+          rules={[{ required: true, message: '请选择业务类型！' }]}
         >
           <Select 
-            placeholder="Select business type"
+            placeholder="选择业务类型"
             className="rounded-lg"
           >
-            <Option value="loan">Loan Application</Option>
-            <Option value="credit">Credit Assessment</Option>
-            <Option value="mortgage">Mortgage Application</Option>
+            <Option value="loan">贷款申请</Option>
+            <Option value="credit">信用评估</Option>
+            <Option value="mortgage">抵押贷款申请</Option>
           </Select>
         </Form.Item>
 
@@ -78,7 +78,7 @@ export const BusinessTask: React.FC = () => {
             block
             className="rounded-lg h-12"
           >
-            Submit Business Task
+            提交业务任务
           </Button>
         </Form.Item>
       </Form>

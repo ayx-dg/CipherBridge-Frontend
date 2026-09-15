@@ -1,7 +1,8 @@
 /node_modules
 /build
 /dist
-/public
+/public/*
+!/public/logo.svg
 # Local Netlify folder
 .netlify
 # Playwright CLI output (may contain credentials)

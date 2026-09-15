@@ -3,19 +3,24 @@
 @tailwind utilities;
 
 /* ============================================================
-   Material 3 (M3) 规范色板 — Baseline Scheme
-   角色映射见 design_doc.md §8
+   融鉴 FinLens 品牌色板 — 紫罗兰 + 青色棱镜
+   取自品牌 Logo（design_doc.md §16）
    ============================================================ */
 :root {
-  --primary-color: #6750A4;        /* M3 primary (tone 40) */
-  --primary-light: #EADDFF;        /* M3 primary-container (tone 90) */
-  --primary-dark: #21005D;         /* M3 on-primary-container (tone 10) */
-  --bg-color: #FFFBFE;             /* M3 background (tone 98) */
-  --card-bg: #FFFFFF;              /* M3 surface / surface-container */
-  --text-primary: #1C1B1F;         /* M3 on-surface (tone 10) */
-  --text-secondary: #49454F;       /* M3 on-surface-variant (tone 30) */
-  --border-color: #CAC4D0;         /* M3 outline-variant (tone 80) */
-  --m3-primary-rgb: 103, 80, 164;  /* #6750A4 用于透明色光晕 */
+  --primary-color: #5B3CC4;        /* 品牌主紫 */
+  --primary-light: #EDE8FC;        /* 浅紫容器色 */
+  --primary-dark: #1E1650;         /* 深紫/藏青 */
+  --accent-color: #45D6EE;         /* 棱镜青 */
+  --bg-color: #F7F6FC;             /* 浅紫白背景 */
+  --card-bg: #FFFFFF;              /* 卡片白 */
+  --text-primary: #1A1740;         /* 主文字（藏青） */
+  --text-secondary: #514D6B;       /* 次文字 */
+  --border-color: #E4E0F5;         /* 边框浅紫 */
+  --m3-primary-rgb: 91, 60, 196;   /* #5B3CC4 用于透明色光晕 */
+  --primary-hover: #6E4FE0;        /* 主按钮 hover */
+  --primary-soft: #C9BCF0;         /* 输入框 hover 边框 */
+  --brand-gradient: linear-gradient(135deg, #7A5AF8 0%, #4B2FB8 100%);
+  --brand-gradient-accent: linear-gradient(135deg, #5568E8 0%, #45D6EE 100%);
 }
 
 body {
@@ -105,7 +110,7 @@ body {
 }
 
 .custom-table .ant-table-thead > tr > th {
-  background: #E7E0EC;          /* M3 surface-variant */
+  background: var(--primary-light);   /* 品牌浅紫 */
   color: var(--text-primary);
   border-bottom: 2px solid var(--border-color);
   font-weight: 600;
@@ -137,14 +142,14 @@ body {
 
 /* Custom Button Hover Effects */
 .ant-btn-primary {
-  background: var(--primary-color);
+  background: var(--brand-gradient);
   border: none;
   box-shadow: 0 6px 16px -4px rgba(var(--m3-primary-rgb), 0.4);
   transition: all 0.3s ease;
 }
 
 .ant-btn-primary:hover {
-  background: var(--primary-light) !important;
+  background: var(--primary-hover) !important;
   transform: translateY(-2px);
   box-shadow: 0 10px 22px -4px rgba(var(--m3-primary-rgb), 0.5) !important;
 }
@@ -157,7 +162,7 @@ body {
 }
 
 .ant-input:hover, .ant-select-selector:hover {
-  border-color: var(--primary-light) !important;
+  border-color: var(--primary-soft) !important;
 }
 
 .ant-input:focus, .ant-select-selector:focus {
