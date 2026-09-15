@@ -103,7 +103,6 @@ export const BankWalletModal: React.FC = () => {
       <Button 
         icon={<BankOutlined />}
         onClick={() => setIsModalOpen(true)}
-        type="primary"
       >
         <span className="!hidden sm:!inline">银行账户</span>
       </Button>

@@ -8,9 +8,8 @@ import { BankWalletModal } from './wallet/BankWalletModal';
 const { Header, Content } = AntLayout;
 
 const navItems = [
-  { key: 'home', label: '首页', to: '/' },
-  { key: 'client', label: '客户端', to: '/client' },
-  { key: 'bank', label: '银行端', to: '/bank' },
+  { key: 'product', label: '产品', to: '/client' },
+  { key: 'solution', label: '解决方案', to: '/bank' },
 ];
 
 const desktopLinkClass = (isActive: boolean) =>
@@ -42,20 +41,22 @@ export const Layout: React.FC = () => {
         </Link>
 
         {/* Desktop navigation */}
-        <nav className="hidden md:flex items-center gap-1 ml-8">
+        <nav className="hidden md:flex items-center gap-1 mx-auto">
           {navItems.map((item) => (
             <NavLink
               key={item.key}
               to={item.to}
-              end={item.to === '/'}
               className={({ isActive }) => desktopLinkClass(isActive)}
             >
               {item.label}
             </NavLink>
           ))}
+          <a href="#about" className={desktopLinkClass(false)}>
+            关于我们
+          </a>
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto md:ml-0 flex items-center gap-2">
           <Link to="/client" className="hidden lg:block">
             <Button type="primary" shape="round" icon={<ArrowRightOutlined />} iconPosition="end">
               申请试用
@@ -81,13 +82,15 @@ export const Layout: React.FC = () => {
             <NavLink
               key={item.key}
               to={item.to}
-              end={item.to === '/'}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) => mobileLinkClass(isActive)}
             >
               {item.label}
             </NavLink>
           ))}
+          <a href="#about" onClick={() => setMenuOpen(false)} className={mobileLinkClass(false)}>
+            关于我们
+          </a>
         </nav>
       </div>
 

@@ -48,12 +48,14 @@ body {
 
 .ant-layout-header {
   padding: 0 32px;
-  background: #ffffff;
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 20;
 }
 
 @media (max-width: 640px) {

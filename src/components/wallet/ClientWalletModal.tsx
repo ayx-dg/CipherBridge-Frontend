@@ -109,7 +109,6 @@ export const ClientWalletModal: React.FC = () => {
       <Button 
         icon={<WalletOutlined />}
         onClick={() => setIsModalOpen(true)}
-        type="primary"
         className="mr-2"
       >
         <span className="!hidden sm:!inline">客户端账户</span>
