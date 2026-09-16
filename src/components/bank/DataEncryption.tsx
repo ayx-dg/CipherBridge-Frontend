@@ -104,7 +104,7 @@ export const DataEncryption: React.FC = () => {
     try {
       const userPublicKey = form.getFieldValue('userPublicKey');
       if (!userPublicKey) {
-        messageApi.warning('请先输入用户公钥！');
+        messageApi.warning('请先输入用户地址！');
         return;
       }
 
@@ -290,11 +290,11 @@ export const DataEncryption: React.FC = () => {
               <Col span={16}>
                 <Form.Item
                   name="userPublicKey"
-                  label={<Text strong>用户公钥</Text>}
-                  rules={[{ required: true, message: '请输入用户公钥！' }]}
+                  label={<Text strong>用户地址</Text>}
+                  rules={[{ required: true, message: '请输入用户地址！' }]}
                 >
                   <Input
-                    placeholder="请输入用户公钥"
+                    placeholder="请输入用户地址"
                     className="font-mono h-10"
                   />
                 </Form.Item>
@@ -472,7 +472,7 @@ export const DataEncryption: React.FC = () => {
 
                       <div className="grid grid-cols-2 gap-4 text-xs">
                         <div>
-                          <Text type="secondary" className="block mb-1">用户公钥</Text>
+                          <Text type="secondary" className="block mb-1">用户地址</Text>
                           <div className="font-mono bg-gray-50 p-2 rounded truncate">
                             {item.userPublicKey.substring(0, 20)}...
                           </div>
